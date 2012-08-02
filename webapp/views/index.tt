@@ -49,43 +49,43 @@
 			<tr>
 				<td>
 					<input type="radio" name="pool" value="power" checked="1">Power</input>
-					<input type="text" value="5" id="power"></input>
+					<input type="text" class="pool_entry" value="5" id="power"></input>
 				</td>
 				<td>
 					<input type="radio" name="pool" value="resilience">Resilience</input>
-					<input type="text" value="5" id="resilience"></input>
+					<input type="text" class="pool_entry" value="5" id="resilience"></input>
 				</td>
 				<td>
 					<input type="radio" name="pool" value="finesse">Finesse</input>
-					<input type="text" value="5" id="finesse"></input>
+					<input type="text" class="pool_entry" value="5" id="finesse"></input>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<input type="radio" name="pool" value="presence">Presence</input>
-					<input type="text" value="5" id="presence"></input>
+					<input type="text" class="pool_entry" value="5" id="presence"></input>
 				</td>
 				<td>
 					<input type="radio" name="pool" value="deduction">Deduction</input>
-					<input type="text" value="5" id="deduction"></input>
+					<input type="text" class="pool_entry" value="5" id="deduction"></input>
 				</td>
 				<td>
 					<input type="radio" name="pool" value="attunement">Attunement</input>
-					<input type="text" value="5" id="attunement"></input>
+					<input type="text" class="pool_entry" value="5" id="attunement"></input>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<input type="radio" name="pool" value="ego" id="egopool">Ego/Willpower</input>
-					<input type="text" value="5" id="ego"></input>
+					<input type="text" class="pool_entry" value="5" id="ego"></input>
 				</td>
 				<td>
 					<input type="radio" name="pool" value="comprehension">Comprehension</input>
-					<input type="text" value="5" id="comprehension"></input>
+					<input type="text" class="pool_entry" value="5" id="comprehension"></input>
 				</td>
 				<td>
 					<input type="radio" name="pool" value="custom">Custom</input>
-					<input type="text" value="" id="custom"></input>
+					<input type="text" class="pool_entry" value="" id="custom"></input>
 				</td>
 			</tr>
 		</table>
@@ -121,7 +121,7 @@
 </div>
 
 <div id="output" class="ui-widget-content drag">
-	<center>Rolls<center>
+	<center>Rolls</center>
 	<div class="output">
 		<ul id="rolls">
 			<li>&nbsp;

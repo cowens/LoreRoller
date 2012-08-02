@@ -23,6 +23,11 @@
 .pools {
 	background: lightgrey;
 }
+
+.pool_entry {
+	width: 8em;
+}
+
 .multi {
 	margin-left: .5em;
 }
