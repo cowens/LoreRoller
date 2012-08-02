@@ -194,7 +194,7 @@ $(document).ready(function() {
 		);
 	} catch(e) {}
 	try {
-		rolling_resource = gapi.hangout.av.effects.createAudioResource("<% platform %>/5d6.wav");
+		rolling_resource = gapi.hangout.av.effects.createAudioResource("<% platform %>/sounds/5d6.wav");
 		rolling_sound = rolling_resource.createSound();
 	} catch(e) {
 	}
