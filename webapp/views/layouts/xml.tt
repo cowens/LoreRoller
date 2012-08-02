@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+	<ModulePrefs title="Lore Roller">
+		<Require feature="rpc"/>
+		<Require feature="views"/>
+	</ModulePrefs>
+	<Content type="html">
+		<![CDATA[
+		<% WRAPPER layouts/main.tt %>
+			<% content %>
+		<% END %>
+		]]>
+	</Content>
+</Module>

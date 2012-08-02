@@ -1,0 +1,146 @@
+<div id="stamina" class="ui-widget-content drag">
+	<center>Stamina</center>
+	<div id="lstam">
+		<input type="checkbox" class="stam" id="s1_1"></input>
+		<input type="checkbox" class="stam" id="s1_2"></input>
+		<input type="checkbox" class="stam" id="s1_3"></input> 1<br />
+		<input type="checkbox" class="stam" id="s2_1"></input>
+		<input type="checkbox" class="stam" id="s2_2"></input>
+		<input type="checkbox" class="stam" id="s2_3"></input> 2<br />
+		<input type="checkbox" class="stam" id="s3_1"></input>
+		<input type="checkbox" class="stam" id="s3_2"></input>
+		<input type="checkbox" class="stam" id="s3_3"></input> 3<br />
+		<input type="checkbox" class="stam" id="s4_1"></input>
+		<input type="checkbox" class="stam" id="s4_2"></input>
+		<input type="checkbox" class="stam" id="s4_3"></input> 4<br />
+		<input type="checkbox" class="stam" id="s5_1"></input>
+		<input type="checkbox" class="stam" id="s5_2"></input>
+		<input type="checkbox" class="stam" id="s5_3"></input> 5<br />
+		<input type="checkbox" class="stam" id="s6_1"></input>
+		<input type="checkbox" class="stam" id="s6_2"></input>
+		<input type="checkbox" class="stam" id="s6_3"></input> 6<br />
+	</div>
+	<div id="rstam">
+		<input type="checkbox" class="stam" id="s8_1"></input>
+		<input type="checkbox" class="stam" id="s8_2"></input>
+		<input type="checkbox" class="stam" id="s8_3"></input> 8<br />
+		<input type="checkbox" class="stam" id="s10_1"></input>
+		<input type="checkbox" class="stam" id="s10_2"></input>
+		<input type="checkbox" class="stam" id="s10_3"></input> 10<br />
+		<input type="checkbox" class="stam" id="s12_1"></input>
+		<input type="checkbox" class="stam" id="s12_2"></input>
+		<input type="checkbox" class="stam" id="s12_3"></input> 12<br />
+		<input type="checkbox" class="stam" id="s14_1"></input>
+		<input type="checkbox" class="stam" id="s14_2"></input>
+		<input type="checkbox" class="stam" id="s14_3"></input> 14<br />
+		<input type="checkbox" class="stam" id="s16_1"></input>
+		<input type="checkbox" class="stam" id="s16_2"></input>
+		<input type="checkbox" class="stam" id="s16_3"></input> 16<br />
+		<input type="checkbox" class="stam" id="s18_1"></input>
+		<input type="checkbox" class="stam" id="s18_2"></input>
+		<input type="checkbox" class="stam" id="s18_3"></input> 18<br />
+	</div>
+</div>
+
+<div id="pools" class="ui-widget-content drag">
+	<center>Pools</center>
+	<div class="pools">
+		<table>
+			<tr>
+				<td>
+					<input type="radio" name="pool" value="power" checked="1">Power</input>
+					<input type="text" value="5" id="power"></input>
+				</td>
+				<td>
+					<input type="radio" name="pool" value="resilience">Resilience</input>
+					<input type="text" value="5" id="resilience"></input>
+				</td>
+				<td>
+					<input type="radio" name="pool" value="finesse">Finesse</input>
+					<input type="text" value="5" id="finesse"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="pool" value="presence">Presence</input>
+					<input type="text" value="5" id="presence"></input>
+				</td>
+				<td>
+					<input type="radio" name="pool" value="deduction">Deduction</input>
+					<input type="text" value="5" id="deduction"></input>
+				</td>
+				<td>
+					<input type="radio" name="pool" value="attunement">Attunement</input>
+					<input type="text" value="5" id="attunement"></input>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="radio" name="pool" value="ego" id="egopool">Ego/Willpower</input>
+					<input type="text" value="5" id="ego"></input>
+				</td>
+				<td>
+					<input type="radio" name="pool" value="comprehension">Comprehension</input>
+					<input type="text" value="5" id="comprehension"></input>
+				</td>
+				<td>
+					<input type="radio" name="pool" value="custom">Custom</input>
+					<input type="text" value="" id="custom"></input>
+				</td>
+			</tr>
+		</table>
+		<div class="multi">
+			Multiplier:
+			<input type="radio" name="multi" value="1" checked="1" id="multi1">1x</input>
+			<input type="radio" name="multi" value="2" id="multi2">2x</input>
+			<input type="radio" name="multi" value="3" id="multi3">3x</input>
+		</div>
+
+		<div class="prof">
+			Proficiency:
+			<input type="radio" name="prof" id="prof1" value="1">1</input>
+			<input type="radio" name="prof" id="prof2" value="2">2</input>
+			<input type="radio" name="prof" id="prof3" value="3" checked="1">3</input>
+			<input type="radio" name="prof" value="4">4</input>
+			<input type="radio" name="prof" value="5">5</input>
+			<input type="radio" name="prof" value="6">6</input>
+		</div>
+		<input id="roll_button" type="button" value="roll" onclick="roll()"></input>
+	</div>
+</div>
+
+<div id="info" class="ui-widget-content drag">
+	<center>Info</center>
+	<div class="info">
+		Name: <input type="text" id="name"></input><br />
+		Focus: <span id="focus">0</span><br />
+		Sounds: <input type="checkbox" name="sounds"></input><br />
+		<input type="button" id="load" value="load"></input>
+		<input type="button" id="save" value="save"></input>
+	</div>
+</div>
+
+<div id="output" class="ui-widget-content drag">
+	<center>Rolls<center>
+	<div class="output">
+		<ul id="rolls">
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+			<li>&nbsp;
+		</ul>
+	</div>
+</div>
+

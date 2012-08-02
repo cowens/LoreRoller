@@ -1,0 +1,62 @@
+#stamina {
+	position: relative;
+	width: 11em;
+}
+#lstam {
+	position:absolute;
+	left:0;
+	width: 5em;
+	background: lightgrey;
+}
+#rstam {
+	position:absolute;
+	left: 5em;
+	width: 6em;
+	background: lightgrey;
+}
+#pools {
+	position: relative;
+	top: -1.25em;
+	left: 12em;
+	width: 25em;
+}
+.pools {
+	background: lightgrey;
+}
+.multi {
+	margin-left: .5em;
+}
+.prof {
+	margin-left: .5em;
+}
+#info {
+	position: relative;
+	top: -15em;
+	left: 38em;
+	width: 12em;
+}
+
+.info {
+	background: lightgrey;
+	padding-left: .5em;
+}
+#output {
+	position: relative;
+	top: -6em;
+	left: 0em;
+	width: 50em;
+}
+.output {
+	width: 99%;
+	background: lightgrey;
+	padding-left: .5em;
+}
+
+.output ul {
+	list-style: none;
+	display: inline;
+	text-align: left;
+}
+
+.output li {
+}
