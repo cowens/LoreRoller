@@ -23,7 +23,7 @@ function calculate_focus() {
 	return focus;
 }
 $(function() {
-	$( ".drag" ).draggable();
+	$( ".drag" ).draggable({handle: "center"});
 });
 $(document).ready(function() {
 	calculate_focus();
