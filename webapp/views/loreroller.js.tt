@@ -252,7 +252,6 @@ function roll() {
 		rolls_cache = JSON.stringify(rolls);
 		$('ul#rolls').html(rolls.join(""));
 		if (sounds) {
-			alert("trying to play");
 			rolling_sound.play();
 		}
 	}
