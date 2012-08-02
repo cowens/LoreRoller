@@ -6,7 +6,6 @@ var stamina = 0;
 var focus = 0;
 var rolls_cache = "[]";
 var sounds = 0;
-var rolling_resource;
 var rolling_sound;
 
 function calculate_focus() {
@@ -194,9 +193,10 @@ $(document).ready(function() {
 		);
 	} catch(e) {}
 	try {
-		rolling_resource = gapi.hangout.av.effects.createAudioResource("<% platform %>/sounds/5d6.wav");
+		var rolling_resource = gapi.hangout.av.effects.createAudioResource("<% platform %>/sounds/5d6.wav");
 		rolling_sound = rolling_resource.createSound();
 	} catch(e) {
+		rolling_sound = new Audio("<% platform %>/sounds/5d6.wav");
 	}
 });
 
@@ -251,5 +251,9 @@ function roll() {
 	} catch(e) {
 		rolls_cache = JSON.stringify(rolls);
 		$('ul#rolls').html(rolls.join(""));
+		if (sounds) {
+			alert("trying to play");
+			rolling_sound.play();
+		}
 	}
 }
