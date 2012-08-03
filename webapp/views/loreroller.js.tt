@@ -171,6 +171,12 @@ $(document).ready(function() {
 			calculate_odds();
 		} else if (this.name == "sounds") {
 			sounds = this.checked;
+		} else {
+			if (this.checked) {
+				$("#" + this.name).show();
+			} else {
+				$("#" + this.name).hide();
+			}
 		}
 	});
 	for (n = 1; n <= 12; n += 1) {

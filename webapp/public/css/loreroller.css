@@ -1,22 +1,24 @@
-#stamina {
-	top: -12.25em;
-	display: inline-block;
-	width: 11em;
+ul {
+	list-style: none;
+	display: inline;
 }
-#lstam {
-	position:absolute;
-	left:0;
-	width: 5em;
+
+.drag {
+	position: absolute;
+}
+
+#info {
+	left: .25em
+	width: 12em;
+}
+
+.info {
 	background: lightgrey;
+	padding-left: .5em;
 }
-#rstam {
-	position:absolute;
-	left: 5em;
-	width: 6em;
-	background: lightgrey;
-}
+
 #pools {
-	display: inline-block;
+	left: 12.5em;
 	width: 25em;
 }
 .pools {
@@ -33,21 +35,26 @@
 .prof {
 	margin-left: .5em;
 }
-#info {
-	top: -7.25em;
-	display: inline-block;
-	width: 12em;
-}
 
-.info {
+#stam {
+	left: 38em;
+	width: 11em;
+}
+#lstam {
+	position:absolute;
+	left:0;
+	width: 5em;
 	background: lightgrey;
-	padding-left: .5em;
+}
+#rstam {
+	position:absolute;
+	left: 5em;
+	width: 6em;
+	background: lightgrey;
 }
 
 #odds {
-	position: absolute;
-	top: .75em;
-	left: 50em;
+	left: 49.5em;
 	width: 8em;
 }
 
@@ -56,26 +63,13 @@
 	padding-left: .5em;
 }
 
-.odds ul {
-	list-style: none;
-	display: inline;
-}
-
 #output {
-	top: 1em;
+	top: 15em;
+	left: 3.88em;
 	width: 50em;
 }
 .output {
 	width: 99%;
 	background: lightgrey;
 	padding-left: .5em;
-}
-
-.output ul {
-	list-style: none;
-	display: inline;
-	text-align: left;
-}
-
-.output li {
 }
