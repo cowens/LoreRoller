@@ -55,7 +55,7 @@ $(document).ready(function() {
 
 		var id;
 		try {
-			id = gapi.hangout.etParticipantById(gapi.hangout.getParticipantId()).person.id;
+			id = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.id;
 		} catch(e) {
 			id = 10041697270;
 		}
