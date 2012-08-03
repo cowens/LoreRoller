@@ -97,6 +97,9 @@ var __slice = Array.prototype.slice;
       try {
         var user_id = gapi.hangout.getParticipantId();
         var data = gapi.hangout.data.getValue("whiteboard events");
+        if (data == undefined) {
+          data = "{}";
+        }
         var events = jQuery.parseJSON(data);
         events[user_id] = this.actions;
         gapi.hangout.data.setValue("whiteboard events", JSON.stringify(events));
@@ -127,6 +130,9 @@ var __slice = Array.prototype.slice;
       //draw everyone else's events
       try {
         var data = gapi.hangout.data.getValue("whiteboard events");
+        if (data == undefined) {
+          data = "{}"
+        }
         var events = jQuery.parseJSON(data);
         for (user_id in events) {
           $.each(events[user_id], function() {
@@ -189,7 +195,11 @@ var __slice = Array.prototype.slice;
   };
   try {
     gapi.hangout.data.onStateChanged.add(function() {
-      Sketch.redraw()
+      try {
+        Sketch.redraw()
+      } catch (e) {
+        console.log(e);
+      }
     });
   } catch (e) {
     console.log(e);
