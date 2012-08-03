@@ -180,6 +180,13 @@ $(document).ready(function() {
 			calculate_focus();
 		});
 	}
+	$('.pool_entry').change(function() {
+		var name = this.id;
+		if ($("#" + name + "pool").attr('checked')) {
+			basepool = this.value;
+			pool = basepool * multi;
+		}
+	});
 	$('#ego').change(function() {
 		calculate_focus();
 	});

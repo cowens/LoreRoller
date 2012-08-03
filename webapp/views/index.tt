@@ -20,49 +20,16 @@
 	<center>Pools</center>
 	<div class="pools">
 		<table>
+<% FOR pools IN [ [ "power", "resilience", "finesse" ], ["presence", "deduction", "attunement" ], [ "ego", "comprehension", "custom" ] ] -%>
 			<tr>
+<% FOR pool IN pools -%>
 				<td>
-					<input type="radio" name="pool" value="power" checked="1">Power</input>
-					<input type="text" class="pool_entry" value="5" id="power"></input>
+					<input type="radio" name="pool" value="<% pool %>" id="<% pool %>pool" <% IF pool == "power" %>checked="1"<% END %>><% IF pool == "ego" %>Ego/Willpower<% ELSE %><% pool | ucfirst %><% END %></input>
+					<input type="text" class="pool_entry" value="5" id="<% pool %>"></input>
 				</td>
-				<td>
-					<input type="radio" name="pool" value="resilience">Resilience</input>
-					<input type="text" class="pool_entry" value="5" id="resilience"></input>
-				</td>
-				<td>
-					<input type="radio" name="pool" value="finesse">Finesse</input>
-					<input type="text" class="pool_entry" value="5" id="finesse"></input>
-				</td>
+<%- END %>
 			</tr>
-			<tr>
-				<td>
-					<input type="radio" name="pool" value="presence">Presence</input>
-					<input type="text" class="pool_entry" value="5" id="presence"></input>
-				</td>
-				<td>
-					<input type="radio" name="pool" value="deduction">Deduction</input>
-					<input type="text" class="pool_entry" value="5" id="deduction"></input>
-				</td>
-				<td>
-					<input type="radio" name="pool" value="attunement">Attunement</input>
-					<input type="text" class="pool_entry" value="5" id="attunement"></input>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="radio" name="pool" value="ego" id="egopool">Ego/Willpower</input>
-					<input type="text" class="pool_entry" value="5" id="ego"></input>
-				</td>
-				<td>
-					<input type="radio" name="pool" value="comprehension">Comprehension</input>
-					<input type="text" class="pool_entry" value="5" id="comprehension"></input>
-				</td>
-				<td>
-					<input type="radio" name="pool" value="custom">Custom</input>
-					<input type="text" class="pool_entry" value="" id="custom"></input>
-				</td>
-			</tr>
-		</table>
+<% END %>		</table>
 		<div class="multi">
 			Multiplier:
 			<input type="radio" name="multi" value="1" checked="1" id="multi1">1x</input>
