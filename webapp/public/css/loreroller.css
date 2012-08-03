@@ -1,5 +1,6 @@
 #stamina {
-	position: relative;
+	top: -12.25em;
+	display: inline-block;
 	width: 11em;
 }
 #lstam {
@@ -15,9 +16,7 @@
 	background: lightgrey;
 }
 #pools {
-	position: relative;
-	top: -1.25em;
-	left: 12em;
+	display: inline-block;
 	width: 25em;
 }
 .pools {
@@ -35,9 +34,8 @@
 	margin-left: .5em;
 }
 #info {
-	position: relative;
-	top: -15em;
-	left: 38em;
+	top: -7.25em;
+	display: inline-block;
 	width: 12em;
 }
 
@@ -45,10 +43,26 @@
 	background: lightgrey;
 	padding-left: .5em;
 }
+
+#odds {
+	position: absolute;
+	top: .75em;
+	left: 50em;
+	width: 8em;
+}
+
+.odds {
+	background: lightgrey;
+	padding-left: .5em;
+}
+
+.odds ul {
+	list-style: none;
+	display: inline;
+}
+
 #output {
-	position: relative;
-	top: -16em;
-	left: 0em;
+	top: 1em;
 	width: 50em;
 }
 .output {
@@ -65,22 +79,3 @@
 
 .output li {
 }
-
-#odds {
-	top: -21.25em;
-	left: 51em;
-	display: inline-block;
-	position: relative;
-	width: 8em;
-}
-
-.odds {
-	background: lightgrey;
-	padding-left: .5em;
-}
-
-.odds ul {
-	list-style: none;
-	display: inline;
-}
-
