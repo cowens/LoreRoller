@@ -9,6 +9,7 @@
 		Stamina: <input type="checkbox" checked="1" name="stam"></input><br />
 		Odds:    <input type="checkbox" checked="1" name="odds"></input><br />
 		Rolls:   <input type="checkbox" checked="1" name="output"></input><br />
+		Whiteboard: <input type="checkbox" name="whiteboard"></input><br />
 		<input type="button" id="load" value="load"></input>
 		<input type="button" id="save" value="save"></input>
 	</div>
@@ -84,4 +85,9 @@
 <% END %>
 		</ul>
 	</div>
+</div>
+
+<div id="whiteboard" class="ui-widget-content drag">
+	<center>Whiteboard</center>
+	<canvas id="simple_sketch" width="800" height="600"></canvas>
 </div>

@@ -48,6 +48,8 @@ function calculate_focus() {
 $(function() {
 	$( ".drag" ).draggable({handle: "center", stack: ".drag"});
 });
+$(function() {$('#simple_sketch').sketch();
+});
 $(document).ready(function() {
 	calculate_focus();
 	calculate_odds();
@@ -106,7 +108,7 @@ $(document).ready(function() {
 
 		var id;
 		try {
-			id = gapi.hangout.etParticipantById(gapi.hangout.getParticipantId()).person.id;
+			id = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.id;
 		} catch(e) {
 			id = 10041697270;
 		}

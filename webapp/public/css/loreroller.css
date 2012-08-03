@@ -5,6 +5,7 @@ ul {
 
 .drag {
 	position: absolute;
+	display: inline-block;
 }
 
 #info {
@@ -72,4 +73,8 @@ ul {
 	width: 99%;
 	background: lightgrey;
 	padding-left: .5em;
+}
+
+#whiteboard {
+	display: none;
 }
