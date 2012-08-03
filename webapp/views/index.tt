@@ -1,44 +1,18 @@
 <div id="stamina" class="ui-widget-content drag">
 	<center>Stamina</center>
 	<div id="lstam">
-		<input type="checkbox" class="stam" id="s1_1"></input>
-		<input type="checkbox" class="stam" id="s1_2"></input>
-		<input type="checkbox" class="stam" id="s1_3"></input> 1<br />
-		<input type="checkbox" class="stam" id="s2_1"></input>
-		<input type="checkbox" class="stam" id="s2_2"></input>
-		<input type="checkbox" class="stam" id="s2_3"></input> 2<br />
-		<input type="checkbox" class="stam" id="s3_1"></input>
-		<input type="checkbox" class="stam" id="s3_2"></input>
-		<input type="checkbox" class="stam" id="s3_3"></input> 3<br />
-		<input type="checkbox" class="stam" id="s4_1"></input>
-		<input type="checkbox" class="stam" id="s4_2"></input>
-		<input type="checkbox" class="stam" id="s4_3"></input> 4<br />
-		<input type="checkbox" class="stam" id="s5_1"></input>
-		<input type="checkbox" class="stam" id="s5_2"></input>
-		<input type="checkbox" class="stam" id="s5_3"></input> 5<br />
-		<input type="checkbox" class="stam" id="s6_1"></input>
-		<input type="checkbox" class="stam" id="s6_2"></input>
-		<input type="checkbox" class="stam" id="s6_3"></input> 6<br />
+<% FOR n IN [1 .. 6] %>
+		<input type="checkbox" class="stam" id="s<% n %>_1"></input>
+		<input type="checkbox" class="stam" id="s<% n %>_2"></input>
+		<input type="checkbox" class="stam" id="s<% n %>_3"></input> <% n %><br />
+<% END %>
 	</div>
 	<div id="rstam">
-		<input type="checkbox" class="stam" id="s8_1"></input>
-		<input type="checkbox" class="stam" id="s8_2"></input>
-		<input type="checkbox" class="stam" id="s8_3"></input> 8<br />
-		<input type="checkbox" class="stam" id="s10_1"></input>
-		<input type="checkbox" class="stam" id="s10_2"></input>
-		<input type="checkbox" class="stam" id="s10_3"></input> 10<br />
-		<input type="checkbox" class="stam" id="s12_1"></input>
-		<input type="checkbox" class="stam" id="s12_2"></input>
-		<input type="checkbox" class="stam" id="s12_3"></input> 12<br />
-		<input type="checkbox" class="stam" id="s14_1"></input>
-		<input type="checkbox" class="stam" id="s14_2"></input>
-		<input type="checkbox" class="stam" id="s14_3"></input> 14<br />
-		<input type="checkbox" class="stam" id="s16_1"></input>
-		<input type="checkbox" class="stam" id="s16_2"></input>
-		<input type="checkbox" class="stam" id="s16_3"></input> 16<br />
-		<input type="checkbox" class="stam" id="s18_1"></input>
-		<input type="checkbox" class="stam" id="s18_2"></input>
-		<input type="checkbox" class="stam" id="s18_3"></input> 18<br />
+<% FOR n IN [8 10 12 14 16 18] %>
+		<input type="checkbox" class="stam" id="s<% 6 + loop.count %>_1"></input>
+		<input type="checkbox" class="stam" id="s<% 6 + loop.count %>_2"></input>
+		<input type="checkbox" class="stam" id="s<% 6 + loop.count %>_3"></input> <% n %><br />
+<% END %>
 	</div>
 </div>
 
@@ -124,23 +98,9 @@
 	<center>Rolls</center>
 	<div class="output">
 		<ul id="rolls">
+<% FOR n IN [1 .. 15] %>
 			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
-			<li>&nbsp;
+<% END %>
 		</ul>
 	</div>
 </div>
-

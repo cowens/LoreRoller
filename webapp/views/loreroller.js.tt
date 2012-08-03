@@ -10,10 +10,15 @@ var rolling_sound;
 
 function calculate_focus() {
 	focus = $("#ego").val();
-	for (n = 1; n <= 18; n += 1) {
+	var last = 0;
+	for (n = 1; n <= 12; n += 1) {
 		if ($("#s" + n + "_3").is(':checked')) {
-			focus -= n <= 6 ? 1 : 2;
+			last = n;
 		}
+	}
+	focus -= last;
+	if (last > 6) {
+		focus -= last - 6;
 	}
 	$('#focus').html(focus);
 	if ($("#egopool").is(":checked")) {
@@ -29,7 +34,7 @@ $(document).ready(function() {
 	$("#save").click(function() {
 		var url = "<% platform %>/save";
 		var data = { stam: [] };
-		for (m = 1; m <= 18; m += 1) {
+		for (m = 1; m <= 12; m += 1) {
 			var found = 0;
 			for (n = 3; n >= 1; n--) {
 				var stam = "#s" + m + "_" + n;
@@ -91,7 +96,7 @@ $(document).ready(function() {
 			dataType: 'jsonp',
 			data: { name: $("#name").val(), id: id },
 			success: function(data) {
-				for (m = 0; m <= 17; m++) {
+				for (m = 0; m <= 11; m++) {
 					var level = data["stam"][m];
 					for (n = 1; n <= level; n++) {
 						var stam = "#s" + (m + 1) + "_" + n;
@@ -145,7 +150,7 @@ $(document).ready(function() {
 			sounds = this.checked;
 		}
 	});
-	for (n = 1; n <= 18; n += 1) {
+	for (n = 1; n <= 12; n += 1) {
 		$("#s" + n + "_1").change(function() {
 			if (!this.checked) {
 				var parts = this.id.split("_");
