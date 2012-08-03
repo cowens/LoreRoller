@@ -48,7 +48,20 @@ function calculate_focus() {
 $(function() {
 	$( ".drag" ).draggable({handle: "center", stack: ".drag"});
 });
-$(function() {$('#simple_sketch').sketch();
+$(function() {
+	$('#simple_sketch').sketch();
+	try {
+		gapi.hangout.data.onStateChanged.add(function() {
+			try {
+				//crappy hack to make the sketch refresh
+				$('#simple_sketch').mouseleave();
+			} catch (e) {
+				console.log(e);
+			}
+		});
+	} catch (e) {
+		console.log(e);
+	}
 });
 $(document).ready(function() {
 	calculate_focus();

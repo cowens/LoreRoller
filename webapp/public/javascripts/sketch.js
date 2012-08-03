@@ -193,17 +193,6 @@ var __slice = Array.prototype.slice;
       return this.context.stroke();
     }
   };
-  try {
-    gapi.hangout.data.onStateChanged.add(function() {
-      try {
-        Sketch.redraw()
-      } catch (e) {
-        console.log(e);
-      }
-    });
-  } catch (e) {
-    console.log(e);
-  }
   return $.sketch.tools.eraser = {
     onEvent: function(e) {
       return $.sketch.tools.marker.onEvent.call(this, e);
