@@ -61,6 +61,13 @@
 	</div>
 </div>
 
+<div id="odds" class="ui-widget-content drag">
+	<center>Odds</center>
+	<div class="odds">
+		<ul id="odds_list"></ul>
+	</div>
+</div>
+
 <div id="output" class="ui-widget-content drag">
 	<center>Rolls</center>
 	<div class="output">
@@ -71,3 +78,6 @@
 		</ul>
 	</div>
 </div>
+
+		
+

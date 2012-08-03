@@ -47,7 +47,7 @@
 }
 #output {
 	position: relative;
-	top: -6em;
+	top: -16em;
 	left: 0em;
 	width: 50em;
 }
@@ -65,3 +65,22 @@
 
 .output li {
 }
+
+#odds {
+	top: -21.25em;
+	left: 51em;
+	display: inline-block;
+	position: relative;
+	width: 8em;
+}
+
+.odds {
+	background: lightgrey;
+	padding-left: .5em;
+}
+
+.odds ul {
+	list-style: none;
+	display: inline;
+}
+
