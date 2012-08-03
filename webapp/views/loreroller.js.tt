@@ -46,7 +46,7 @@ function calculate_focus() {
 	return focus;
 }
 $(function() {
-	$( ".drag" ).draggable({handle: "center"});
+	$( ".drag" ).draggable({handle: "center", stack: ".drag"});
 });
 $(document).ready(function() {
 	calculate_focus();
