@@ -5,6 +5,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		pools: true,
 		info: false,
 		stamina: true,
+		skills: true,
 	};
 
 	$scope.select_abilities = [

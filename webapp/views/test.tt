@@ -131,6 +131,10 @@
 			<span ng-show="dialog.info">Hide</span>
 			<span ng-hide="dialog.info">Show</span> info
 		</div>
+		<div ng-click="toggle('skills')">
+			<span ng-show="dialog.skills">Hide</span>
+			<span ng-hide="dialog.skills">Show</span> info
+		</div>
 	</div>
 	<div class="header" ng-click="toggle_menu()">
 		Config
