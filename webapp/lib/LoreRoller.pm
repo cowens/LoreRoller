@@ -7,7 +7,7 @@ my $platform = -f "$ENV{HOME}/environment.json" ?
 	"https://loreroller-cowens.dotcloud.com" : "http://0.0.0.0:3000";
 
 get "/" => sub {
-	template "index.tt", { platform => $platform };
+	template "index.tt", { platform => $platform, css => 'loreroller', js => "loreroller" };
 };
 
 get "/loreroller.js" => sub {
@@ -17,7 +17,7 @@ get "/loreroller.js" => sub {
 
 get "/loreroller.xml" => sub {
 	content_type 'text/xml';
-	template "index.tt", { platform => $platform }, { layout => "xml" };
+	template "index.tt", { platform => $platform, css => 'loreroller', js => "loreroller" }, { layout => "xml" };
 };
 
 my $load = sub {
@@ -58,10 +58,11 @@ my $save = sub {
 };
 
 get "/test" => sub {
-	template "test.tt";
+	template "test.tt", { platform => $platform, css => "style", js => 'js/model' };
 };
 get "/test.xml" => sub {
-	template "test.tt";
+	content_type 'text/xml';
+	template "test.tt", { platform => $platform, css => "style", js => 'js/model' }, { layout => "xml" };
 };
 
 post "/save" => $save;
