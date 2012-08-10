@@ -173,15 +173,40 @@ function ModelCtrl($scope, $timeout, $filter) {
 		}
 	
 		var date = $filter('date')(new Date, "HH:mm:ss");
-		var user = "Chas. Owens";
+		var user = "X";
+		try {
+			var person = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId());
+			user = person.displayName;
+		} catch(e) {}
 		var roll_text = rolls.length < 38 ? rolls.sort().join(", ") : "lots";
 		var successes = rolled_successes + set;
-		$scope.rolls.unshift(
-			date + " <b>" + user + "</b> rolled <b>" + successes + "</b> (" +
+		var roll = date + " <b>" + user + "</b> rolled <b>" + successes + "</b> (" +
 			set + "+" + rolled_successes + ") successes " +
 			dice + "/" + $scope.proficiency + " (" + roll_text + ")"
-		);
-		$scope.rolls.pop();
+		var data;
+		try {
+			data = gapi.hangout.data.getValue("rolls");
+			if (data == undefined) {
+				data = "[]";
+			}
+
+			data = jQuery.parseJSON(data);
+		} catch(e) {
+			data = $scope.rolls;
+		}
+
+		data.unshift(roll);
+		while (data.length > 15) {
+			data.pop();
+		}
+		while (data.length < 15) {
+			data.push("&nbsp;");
+		}
+		try {
+			gapi.hangout.data.setValue("rolls", JSON.stringify(data));
+		} catch(e) {
+			$scope.rolls = rolls;
+		}
 	};
 
 	//jQuery stuff needs to run after the DOM has been manipulated
@@ -264,6 +289,18 @@ function ModelCtrl($scope, $timeout, $filter) {
 			autoOpen: false,
 			modal: false,
 		});
+
+		try {
+			gapi.hangout.data.onStateChanged.add(
+				function (change) {
+					var data = gapi.hangout.data.getValue("rolls")
+					if (data == undefined) {
+						data = "[]";
+					}
+					$scope.rolls = jQuery.parseJSON(data);
+				}
+			);
+		} catch(e) {}
 
 	}, 500);
 }
