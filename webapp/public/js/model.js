@@ -146,7 +146,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 
 		for (var i = 0; i < $scope.skills.length; i++) {
 			var skill = $scope.skills[i];
-			console.log(skill);
 			if (skill.use == false) {
 				continue;
 			}
