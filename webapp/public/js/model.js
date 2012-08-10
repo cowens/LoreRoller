@@ -297,11 +297,13 @@ function ModelCtrl($scope, $timeout, $filter) {
 					if (data == undefined) {
 						data = "[]";
 					}
-					$scope.rolls = jQuery.parseJSON(data);
+					$scope.$apply(
+						$scope.rolls = jQuery.parseJSON(data);
+					);
 				}
 			);
 		} catch(e) {}
 
-	}, 500);
+	}, 1000);
 }
 
