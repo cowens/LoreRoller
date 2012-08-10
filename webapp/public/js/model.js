@@ -258,11 +258,11 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$( "#skills" ).dialog({
 			autoOpen: true,
 			modal: false,
+			position: [ 312, 250 ],
 		});
 		$( "#add_skills" ).dialog({
 			autoOpen: false,
 			modal: false,
-			position: [ 312, 250 ],
 		});
 
 	}, 500);
