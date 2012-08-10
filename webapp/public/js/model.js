@@ -265,6 +265,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 			position: [ 312, 250 ],
 		});
 
-	}, 100);
+	}, 500);
 }
 
