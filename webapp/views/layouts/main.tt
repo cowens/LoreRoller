@@ -1,14 +1,27 @@
-<html>
+<html ng-app="ngSanitize">
 	<head>
-		<link type="text/css" href="<% platform %>/css/smoothness/jquery-ui-1.8.22.custom.css" rel="Stylesheet" />
+	<!-- old code needs this -->
 		<link type="text/css" href="<% platform %>/css/loreroller.css" rel="Stylesheet" />
 		<script type="text/javascript" src="<% platform %>/javascripts/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="<% platform %>/javascripts/sketch.js"></script>
 		<script type="text/javascript" src="<% platform %>/javascripts/jquery-ui-1.8.22.custom.min.js"></script>
 		<script type="text/javascript" src="<% platform %>/loreroller.js"></script>
+	<!-- new code needs this -->
+		<script type="text/javascript" src="<% platform %>js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="<% platform %>js/jquery-ui-1.8.22.custom.min.js"></script>
+		<script type="text/javascript" src="<% platform %>js/angular-1.0.1.min.js"></script>
+		<script type="text/javascript" src="<% platform %>js/angular-sanitize-1.0.1.min.js"></script>
+		<script type="text/javascript" src="<% platform %>js/jeditable.js"></script>
+
+
+		<link type="text/css" href="<% platform %>css/style.css" rel="Stylesheet" />
+		<script type="text/javascript" src="<% platform %>js/model.js"></script>
+	<!-- common -->
+		<link type="text/css" href="<% platform %>/css/smoothness/jquery-ui-1.8.22.custom.css" rel="Stylesheet />
 		<script src="//hangoutsapi.talkgadget.google.com/hangouts/_/api/hangout.js?v=1.1"></script>
+
 	</head>
-	<body>
+	<body ng-controller="ModelCtrl">
 	<% content %>
 	</body>
 </html>

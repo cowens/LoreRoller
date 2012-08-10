@@ -57,7 +57,18 @@ my $save = sub {
 	return qq/$callback({ "status": "saved" })/;
 };
 
+get "/test" => sub {
+	template "test.tt";
+};
+get "/test.xml" => sub {
+	template "test.tt";
+};
+
 post "/save" => $save;
 get "/save" => $save;
+
+get "/expr" => sub {
+	template "expr.tt";
+};
 
 true;
