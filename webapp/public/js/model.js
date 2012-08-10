@@ -92,8 +92,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 
 	$scope.rolls = [];
 	$scope.skills = [
-		{ use: true, name: "a", ability: "power", rank: 5, advancing: 0 },
-		{ use: false, name: "b", ability: "power", rank: 4, advancing: 0 }
 	];
 
 	for (var i = 0; i < 15; i++) {
@@ -175,8 +173,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		var date = $filter('date')(new Date, "HH:mm:ss");
 		var user = "X";
 		try {
-			var person = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId());
-			user = person.displayName;
+			var person = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.displayName;
 		} catch(e) {}
 		var roll_text = rolls.length < 38 ? rolls.sort().join(", ") : "lots";
 		var successes = rolled_successes + set;
