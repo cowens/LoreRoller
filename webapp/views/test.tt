@@ -133,7 +133,7 @@
 		</div>
 		<div ng-click="toggle('skills')">
 			<span ng-show="dialog.skills">Hide</span>
-			<span ng-hide="dialog.skills">Show</span> info
+			<span ng-hide="dialog.skills">Show</span> skills
 		</div>
 	</div>
 	<div class="header" ng-click="toggle_menu()">
