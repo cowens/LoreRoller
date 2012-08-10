@@ -297,9 +297,9 @@ function ModelCtrl($scope, $timeout, $filter) {
 					if (data == undefined) {
 						data = "[]";
 					}
-					$scope.$apply(
+					$scope.$apply(function() {
 						$scope.rolls = jQuery.parseJSON(data);
-					);
+					});
 				}
 			);
 		} catch(e) {}
