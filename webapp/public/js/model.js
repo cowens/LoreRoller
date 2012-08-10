@@ -173,8 +173,12 @@ function ModelCtrl($scope, $timeout, $filter) {
 		var date = $filter('date')(new Date, "HH:mm:ss");
 		var user = "X";
 		try {
-			var person = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.displayName;
-		} catch(e) {}
+			user = gapi.hangout.getParticipantById(
+				gapi.hangout.getParticipantId()
+			).person.displayName;
+		} catch(e) {
+			console.log(e);
+		}
 		var roll_text = rolls.length < 38 ? rolls.sort().join(", ") : "lots";
 		var successes = rolled_successes + set;
 		var roll = date + " <b>" + user + "</b> rolled <b>" + successes + "</b> (" +
@@ -189,6 +193,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 
 			data = jQuery.parseJSON(data);
 		} catch(e) {
+			console.log(e);
 			data = $scope.rolls;
 		}
 
@@ -202,6 +207,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		try {
 			gapi.hangout.data.setValue("rolls", JSON.stringify(data));
 		} catch(e) {
+			console.log(e);
 			$scope.rolls = rolls;
 		}
 	};
@@ -299,7 +305,9 @@ function ModelCtrl($scope, $timeout, $filter) {
 					});
 				}
 			);
-		} catch(e) {}
+		} catch(e) {
+			console.log(e);
+		}
 
 	}, 1000);
 }
