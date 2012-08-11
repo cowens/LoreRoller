@@ -132,7 +132,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		var o = { stamina: [] };
 		for (var i = 0; i < 12; i++) {
 			o.stamina[i] = 0;
-			for (var j = 3; j >= 0; j++) {
+			for (var j = 3; j >= 0; j--) {
 				if ($scope.stamina[i][j]) {
 					o.stamina[i] = j;
 					break;
@@ -167,6 +167,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 				}
 			}
 		});
+		return;
 	}
 
 	$scope.load = function() {
