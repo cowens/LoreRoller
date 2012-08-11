@@ -163,7 +163,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 					gapi.hangout.layout.displayNotice(name + " was saved");
 				} catch(e) {
 					console.log(e);
-					alert(name + " was saved");
+					alert($scope.character_name + " was saved");
 				}
 			}
 		});
