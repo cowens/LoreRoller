@@ -155,7 +155,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		}
 
 		$.ajax({
-			url: "https://loreroller-cowens.dot-cloud.com/save",
+			url: "https://loreroller-cowens.dotcloud.com/save",
 			dataType: 'jsonp',
 			data: { id: id, name: $scope.character_name, data: jsondata },
 			success: function() {
