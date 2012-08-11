@@ -113,6 +113,13 @@
 	</form>
 </div>
 
+<div id="save" title="Save character">
+	Name:
+	<input type="text" ng-model="character_name" />
+	<br />
+	<button ng-click="save()">Save</button>
+</div>
+
 <div class="bottom">
 	<div id="config" class="menu">
 		<div ng-click="toggle('pools')">
@@ -134,6 +141,10 @@
 		<div ng-click="toggle('skills')">
 			<span ng-show="dialog.skills">Hide</span>
 			<span ng-hide="dialog.skills">Show</span> skills
+		</div>
+		<div ng-click="toggle('save')">
+			<span ng-show="dialog.save">Hide</span>
+			<span ng-hide="dialog.save">Show</span> save
 		</div>
 	</div>
 	<div class="header" ng-click="toggle_menu()">

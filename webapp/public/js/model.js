@@ -6,6 +6,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		info: false,
 		stamina: true,
 		skills: true,
+		save: false,
 	};
 
 	$scope.select_abilities = [
@@ -125,6 +126,50 @@ function ModelCtrl($scope, $timeout, $filter) {
 			$("#" + id).dialog("open");
 			$scope.dialog[id] = true;
 		}
+	}
+
+	$scope.save = function() {
+		var o = { stamina: [] };
+		for (var i = 0; i < 12; i++) {
+			o.stamina[i] = 0;
+			for (var j = 3; j >= 0; j++) {
+				if ($scope.stamina[i][j]) {
+					o.stamina[i] = j;
+					break;
+				}
+			}
+		}
+
+		o.skills    = $scope.skills;
+		o.abilities = $scope.abilities;
+		o.name      = $scope.character_name;
+
+		var jsondata = JSON.stringify(o);
+
+		var id;
+		try {
+			id = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.id;
+		} catch(e) {
+			console.log(e);
+			id = 10041697270;
+		}
+
+		$.ajax({
+			url: url,
+			dataType: 'jsonp',
+			data: { id: id, name: $scope.character_name, data: jsondata },
+			success: function() {
+				try {
+					gapi.hangout.layout.displayNotice(name + " was saved");
+				} catch(e) {
+					console.log(e);
+					alert(name + " was saved");
+				}
+			}
+		});
+	}
+
+	$scope.load = function() {
 	}
 
 	$scope.roll = function() {
@@ -291,6 +336,10 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$( "#add_skills" ).dialog({
 			autoOpen: false,
 			modal: false,
+		});
+		$( "#save" ).dialog({
+			autoOpen: false,
+			modal: true,
 		});
 
 		try {
