@@ -44,13 +44,14 @@ my $save = sub {
 	my $name     = param "name";
 	my $id       = param "id";
 	my $data     = param "data";
+	warn "data is [$data]";	
 
 	$name =~ s{/}{%}g;
 	$id =~ s{[^0-9]}{}g;
-
+	
 	open my $fh, ">", "$ENV{HOME}/data/$id-$name"
 		or die "could not open $name: $!";
-	
+
 	print $fh $data;
 	
 	content_type 'application/json';

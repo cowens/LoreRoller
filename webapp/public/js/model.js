@@ -340,7 +340,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#save" ).dialog({
 			autoOpen: false,
-			modal: true,
+			modal: false,
 		});
 
 		try {
