@@ -198,7 +198,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 			}
 		});
 	});
-	}
 
 	$scope.roll = function() {
 		var pool;
