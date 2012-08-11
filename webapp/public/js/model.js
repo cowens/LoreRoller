@@ -171,6 +171,33 @@ function ModelCtrl($scope, $timeout, $filter) {
 	}
 
 	$scope.load = function() {
+		var id;
+		try {
+			id = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.id;
+		} catch(e) {
+			id = 10041697270;
+		}
+
+		$.ajax({
+			url: "https://loreroller-cowens.dotcloud.com/load",
+			dataType: 'jsonp',
+			data: { name: $scope.character_name, id: id },
+			success: function(data) {
+				for (m = 0; m <= 11; m++) {
+					level = data.stamina[m];
+					for (n = 1; n <= level; n++) {
+						$scope.stamina[m][n] = true;
+					}
+					for (n = level + 1; n <= 3; n++) {
+						$scope.stamina[m][n] = false;
+					}
+				}
+				$scope.skills    = data.skills;
+				$scope.abilities = data.abilities;
+				$scope.name      = data.character_name;
+			}
+		});
+	});
 	}
 
 	$scope.roll = function() {
