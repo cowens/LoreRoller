@@ -197,7 +197,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 				$scope.name      = data.character_name;
 			}
 		});
-	});
+	}
 
 	$scope.roll = function() {
 		var pool;
