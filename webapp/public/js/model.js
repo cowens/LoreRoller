@@ -301,9 +301,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 			id = 10041697270;
 		}
 
-		console.log(jsondata);
-		return;
-
 		$.ajax({
 			url: "https://loreroller-cowens.dotcloud.com/save",
 			dataType: 'jsonp',
