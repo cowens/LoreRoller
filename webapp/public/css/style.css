@@ -3,9 +3,11 @@ li {
 }
 
 #info {
-	font-size: .5em;
 }
 #info input[type=number] {
+	width: 3.5em;
+}
+#skills input[type=number] {
 	width: 3.5em;
 }
 
@@ -60,7 +62,18 @@ li {
 }
 
 #rolls {
+	position: relative;
 	white-space: nowrap;
+}
+
+#skills .scrollContent {
+	display: block;
+	height: 200px;
+	overflow: auto;
+}
+
+#skills .fixedheader {
+	display: block;
 }
 
 .bottom {
