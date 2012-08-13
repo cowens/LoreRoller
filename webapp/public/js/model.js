@@ -69,7 +69,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 							break;
 						}
 					}
-					var base = Math.ceil(($scope.abilities[1]["abilities"][0].value + $scope.abilities[1]["abilities"][2].value) / 2);
+					var base = Math.ceil(($scope.abilities[1]["abilities"][0].value + $scope.abilities[0]["abilities"][2].value) / 2);
 					var pool = base - stam;
 					//if stam > 6 then it counts twice
 					if (stam > 6) {
@@ -482,10 +482,12 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#roll_button").button();
 
 		$('.edit span').editable(function(value, settings) {
+			var num;
 			$scope.$apply(function() { 
-				$scope.custom_pool = parseInt(value);
+				num = value.match(/[1-9][0-9]+/)[0];
+				$scope.custom_pool = parseInt(num);
 			});
-			return value;
+			return "Custom (" + num + ")";
 		}, {
 			style: "inherit",
 			tooltip: "double click to change",
