@@ -79,7 +79,7 @@
 </div>
 
 <div id="skills" title="Skills">
-	<button id="open_add_skills" ng-click="add_skills">add skills</button>
+	<button id="open_add_skills" ng-click="toggle('add_skills')">add skills</button>
 	<input type="checkbox" ng-model="show_unknown_skills">Show unknown skills</input>
 	<br />
 	Search: <input ng-model="skill_search" />
