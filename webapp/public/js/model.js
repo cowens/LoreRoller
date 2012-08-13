@@ -495,22 +495,54 @@ function ModelCtrl($scope, $timeout, $filter) {
 			width: "35em",
 			modal: false,
 			position: [ 0, 0 ],
+			open: function(e, ui) {
+				$scope.$apply(function() {
+					$scope.dialog.pools = true;
+				});
+			},
+			close: function(e, ui) {
+					$scope.dialog.pools = false;
+			},
 		});
 		$( "#info" ).dialog({
 			autoOpen: false,
 			modal: false,
 			position: [ 312, 250 ],
+			open: function(e, ui) {
+				$scope.$apply(function() {
+					$scope.dialog.info = true;
+				});
+			},
+			close: function(e, ui) {
+					$scope.dialog.info = false;
+			},
 		});
 		$( "#stamina" ).dialog({
 			autoOpen: true,
 			modal: false,
 			position: [ 0 , 250 ],
+			open: function(e, ui) {
+				$scope.$apply(function() {
+					$scope.dialog.stamina = true;
+				});
+			},
+			close: function(e, ui) {
+					$scope.dialog.stamina = false;
+			},
 		});
 		$( "#rolls" ).dialog({
 			autoOpen: true,
 			modal: false,
 			width: "35em",
 			position: [ 630 , 0 ],
+			open: function(e, ui) {
+				$scope.$apply(function() {
+					$scope.dialog.rolls = true;
+				});
+			},
+			close: function(e, ui) {
+					$scope.dialog.rolls = false;
+			},
 		});
 		$( "#skills" ).dialog({
 			autoOpen: true,
@@ -518,14 +550,38 @@ function ModelCtrl($scope, $timeout, $filter) {
 			position: [ 312, 250 ],
 			height: 360,
 			width: 410,
+			open: function(e, ui) {
+				$scope.$apply(function() {
+					$scope.dialog.skills = true;
+				});
+			},
+			close: function(e, ui) {
+					$scope.dialog.skills = false;
+			},
 		});
 		$( "#add_skills" ).dialog({
 			autoOpen: false,
 			modal: false,
+			open: function(e, ui) {
+				$scope.$apply(function() {
+					$scope.dialog.add_skills = true;
+				});
+			},
+			close: function(e, ui) {
+					$scope.dialog.add_skills = false;
+			},
 		});
 		$( "#save" ).dialog({
 			autoOpen: false,
 			modal: false,
+			open: function(e, ui) {
+				$scope.$apply(function() {
+					$scope.dialog.save = true;
+				});
+			},
+			close: function(e, ui) {
+					$scope.dialog.save = false;
+			},
 		});
 
 		$(".skill_edit").button();

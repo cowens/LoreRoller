@@ -128,30 +128,12 @@
 
 <div class="bottom">
 	<div id="config" class="menu">
-		<div ng-click="toggle('pools')">
-			<span ng-show="dialog.pools">Hide</span>
-			<span ng-hide="dialog.pools">Show</span> pools
-		</div>
-		<div ng-click="toggle('rolls')">
-			<span ng-show="dialog.rolls">Hide</span>
-			<span ng-hide="dialog.rolls">Show</span> rolls
-		</div>
-		<div ng-click="toggle('stamina')">
-			<span ng-show="dialog.stamina">Hide</span>
-			<span ng-hide="dialog.stamina">Show</span> stamina
-		</div>
-		<div ng-click="toggle('info')">
-			<span ng-show="dialog.info">Hide</span>
-			<span ng-hide="dialog.info">Show</span> info
-		</div>
-		<div ng-click="toggle('skills')">
-			<span ng-show="dialog.skills">Hide</span>
-			<span ng-hide="dialog.skills">Show</span> skills
-		</div>
-		<div ng-click="toggle('save')">
-			<span ng-show="dialog.save">Hide</span>
-			<span ng-hide="dialog.save">Show</span> save/load character
-		</div>
+		<div ng-click="toggle('pools')">Pools</div>
+		<div ng-click="toggle('rolls')">Rolls</div>
+		<div ng-click="toggle('stamina')">Stamina</div>
+		<div ng-click="toggle('info')">Info</div>
+		<div ng-click="toggle('skills')">Skills</div>
+		<div ng-click="toggle('save')">Save/load character</div>
 	</div>
 	<div class="header" ng-click="toggle_menu()">
 		Config
