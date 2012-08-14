@@ -256,7 +256,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 	$scope.add_skill = function() {
 		$scope.skills.push({
 			use: false,
-			ability: $scope.skill_ability,
+			ability: $scope.skill_ability.name,
 			name: $scope.skill_name,
 			rank: $scope.skill_rank,
 			advancing: $scope.skill_advancing,
@@ -509,13 +509,15 @@ function ModelCtrl($scope, $timeout, $filter) {
 			});
 			$("#s" + n + "_1").change(function() {
 				var i = this.id.split("_")[0].split("s")[1];
-				$scope.$apply(function() {
-					if (this.checked) {
+				if (this.checked) {
+					$scope.$apply(function() {
 						$scope.stamina[i][0] = true;
-					} else {
+					});
+				} else {
+					$scope.$apply(function() {
 						$scope.stamina[i][2] = false;
-					}
-				});
+					});
+				}
 			});
 			$("#s" + n + "_2").change(function() {
 				if (this.checked) {
