@@ -1,4 +1,4 @@
-<div id="info" title="Info">
+<div id="stats" title="Stats">
 	<ul>
 		<li>Abilities
 			<div ng-repeat="ability_group in abilities">
@@ -15,6 +15,8 @@
 			</div>
 		</li>
 		<li>focus: {{ pools[2][1].value() }}
+		<li>faith: <span id="faith">{{ faith }}</span>
+		<li>virtue: <span id="virtue">{{ virtue }}</span>
 	</ul>
 </div>
 
@@ -131,7 +133,7 @@
 		<div ng-click="toggle('pools')">Pools</div>
 		<div ng-click="toggle('rolls')">Rolls</div>
 		<div ng-click="toggle('stamina')">Stamina</div>
-		<div ng-click="toggle('info')">Info</div>
+		<div ng-click="toggle('stats')">Stats</div>
 		<div ng-click="toggle('skills')">Skills</div>
 		<div ng-click="toggle('save')">Save/load character</div>
 	</div>

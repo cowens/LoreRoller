@@ -2,10 +2,12 @@ var LoreRoller = angular.module('LoreRoller', ['ngSanitize']);
 
 function ModelCtrl($scope, $timeout, $filter) {
 
+	$scope.faith = 1;
+	$scope.virtue = 3;
 	$scope.dialog = {
 		rolls: true,
 		pools: true,
-		info: false,
+		stats: false,
 		stamina: true,
 		skills: true,
 		save: false,
@@ -18,6 +20,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 		{ name: "Charisma" },
 		{ name: "Intelligence" },
 		{ name: "Wisdom" },
+		{ name: "Combat" },
+		{ name: "Patterns" },
 	];
 
 	$scope.skill_ability = $scope.select_abilities[0];
@@ -291,6 +295,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 
 		o.abilities = $scope.abilities;
 		o.name      = $scope.character_name;
+		o.faith     = $scope.faith;
+		o.virtue    = $scope.virtue;
 
 		var jsondata = JSON.stringify(o);
 
@@ -374,6 +380,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 				$scope.$apply(function() {
 					$scope.abilities = data.abilities;
 					$scope.name      = data.character_name;
+					$scope.virtue    = data.virtue;
+					$scope.faith     = data.faith;
 					$scope.skills    = [];
 				});
 				for (var i = 0; i < $scope.select_abilities.length; i++) {
@@ -535,6 +543,30 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#prof").buttonset();
 		$("#roll_button").button();
 
+		$('#virtue').editable(function(value, settings) {
+			var num = value.match(/[1-9][0-9]*/)[0];
+			$scope.$apply(function() {
+				$scope.virtue = num;
+			});
+			return num;
+		}, {
+			style: "inherit",
+			tooltip: "click to change",
+			event: "click",
+			width: "3em"
+		});
+		$('#faith').editable(function(value, settings) {
+			var num = value.match(/[1-9][0-9]*/)[0];
+			$scope.$apply(function() {
+				$scope.faith = num;
+			});
+			return num;
+		}, {
+			style: "inherit",
+			tooltip: "click to change",
+			event: "click",
+			width: "3em"
+		});
 		$('.edit span').editable(function(value, settings) {
 			var num;
 			$scope.$apply(function() { 
@@ -559,17 +591,17 @@ function ModelCtrl($scope, $timeout, $filter) {
 				$scope.dialog.pools = false;
 			},
 		});
-		$( "#info" ).dialog({
+		$( "#stats" ).dialog({
 			autoOpen: false,
 			modal: false,
 			position: [ 312, 250 ],
 			open: function(e, ui) {
 				$scope.$apply(function() {
-					$scope.dialog.info = true;
+					$scope.dialog.stats = true;
 				});
 			},
 			close: function(e, ui) {
-					$scope.dialog.info = false;
+					$scope.dialog.stats = false;
 			},
 		});
 		$( "#stamina" ).dialog({

@@ -2,9 +2,9 @@ li {
 	list-style: none;
 }
 
-#info {
+#stats {
 }
-#info input[type=number] {
+#stats input[type=number] {
 	width: 3.5em;
 }
 #skills input[type=number] {
