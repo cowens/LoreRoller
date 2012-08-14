@@ -1,3 +1,5 @@
+var LoreRoller = angular.module('LoreRoller', ['ngSanitize']);
+
 function ModelCtrl($scope, $timeout, $filter) {
 
 	$scope.dialog = {
@@ -96,142 +98,142 @@ function ModelCtrl($scope, $timeout, $filter) {
 	//find a way to handle things like crafting and language
 	$scope.rolls = [];
 	$scope.skills = [
-		{ rank: 0, advancing: 0, ability: "might", name: "bashing" },
-		{ rank: 0, advancing: 0, ability: "might", name: "catching" },
-		{ rank: 0, advancing: 0, ability: "might", name: "climbing" },
-		{ rank: 0, advancing: 0, ability: "might", name: "crushing" },
-		{ rank: 0, advancing: 0, ability: "might", name: "flying" },
-		{ rank: 0, advancing: 0, ability: "might", name: "gripping" },
-		{ rank: 0, advancing: 0, ability: "might", name: "jumping" },
-		{ rank: 0, advancing: 0, ability: "might", name: "lifting/carrying" },
-		{ rank: 0, advancing: 0, ability: "might", name: "lumbering" },
-		{ rank: 0, advancing: 0, ability: "might", name: "punting" },
-		{ rank: 0, advancing: 0, ability: "might", name: "pushing/pulling" },
-		{ rank: 0, advancing: 0, ability: "might", name: "ramming" },
-		{ rank: 0, advancing: 0, ability: "might", name: "rooting" },
-		{ rank: 0, advancing: 0, ability: "might", name: "rowing" },
-		{ rank: 0, advancing: 0, ability: "might", name: "running" },
-		{ rank: 0, advancing: 0, ability: "might", name: "shearing" },
-		{ rank: 0, advancing: 0, ability: "might", name: "slaming" },
-		{ rank: 0, advancing: 0, ability: "might", name: "swimming" },
-		{ rank: 0, advancing: 0, ability: "might", name: "tackling" },
-		{ rank: 0, advancing: 0, ability: "might", name: "throwing" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "alertness" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "butchery" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "carpentry" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "carving" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "cobbling" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "crafting" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "cultivating" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "digging" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "endurance" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "farriering" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "forging (drop)" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "glass-working" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "harvesting" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "leatherwork" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "masonry" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "sculpting" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "sewing/tailoring" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "smithing" },
-		{ rank: 0, advancing: 0, ability: "vigor", name: "stabilize" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "acrobatics" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "balance" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "bowyer/fletching" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "break fall" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "concealment" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "contortion" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "dexterity" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "disarm" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "drawing" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "driving" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "gaming (agility)" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "lock picking" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "painting" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "pickpocket" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "precision" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "riding" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "rope handling" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "slight of hand" },
-		{ rank: 0, advancing: 0, ability: "agility", name: "stealth" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "acting" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "charioteering" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "courage" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "dancing" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "empathy" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "etiquette" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "expression" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "fabrication" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "herding" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "impersonation" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "inspiration" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "magnetism" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "mercantile" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "misdirection" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "patience" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "singing" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "taunt" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "teamwork" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "training (animal)" },
-		{ rank: 0, advancing: 0, ability: "charisma", name: "ventrilioquism" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "agriculture" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "anatomy" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "arithmetic" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "astronomy" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "brewing" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "cartography" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "computer" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "cooking" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "electronics" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "engineering" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "fishing" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "herbalism" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "history" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "language (arcane)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "language (common)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "language (dwarvish)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "language (elvish)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "language (gnomish)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "language (minotaur)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "language (solamnic)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "logic" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "medicine" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "memory" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "metallurgy" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "schooling (arcane)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "schooling (common)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "schooling (dwarvish)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "schooling (elvish)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "schooling (minotaur)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "schooling (solamnic)" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "science" },
-		{ rank: 0, advancing: 0, ability: "intelligence", name: "weaving" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "awareness (sight)" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "awareness (sound)" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "awareness (touch)" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "awareness (taste)" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "awareness (smell)" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "awareness (general)" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "concentration" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "debate" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "diplomacy" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "direction sense" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "entity" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "fire building" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "forgery" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "gaming (wisdom)" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "hunting" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "instrument" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "intuition" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "navigation" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "pilot" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "politics" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "read lips" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "research" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "snare/traps" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "survival" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "tracking" },
-		{ rank: 0, advancing: 0, ability: "wisdom", name: "weather sense" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "bashing" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "catching" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "climbing" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "crushing" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "flying" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "gripping" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "jumping" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "lifting/carrying" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "lumbering" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "punting" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "pushing/pulling" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "ramming" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "rooting" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "rowing" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "running" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "shearing" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "slaming" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "swimming" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "tackling" },
+		{ rank: 0, advancing: 0, ability: "Might", name: "throwing" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "alertness" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "butchery" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "carpentry" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "carving" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "cobbling" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "crafting" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "cultivating" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "digging" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "endurance" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "farriering" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "forging (drop)" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "glass-working" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "harvesting" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "leatherwork" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "masonry" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "sculpting" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "sewing/tailoring" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "smithing" },
+		{ rank: 0, advancing: 0, ability: "Vigor", name: "stabilize" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "acrobatics" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "balance" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "bowyer/fletching" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "break fall" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "concealment" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "contortion" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "dexterity" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "disarm" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "drawing" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "driving" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "gaming (agility)" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "lock picking" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "painting" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "pickpocket" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "precision" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "riding" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "rope handling" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "slight of hand" },
+		{ rank: 0, advancing: 0, ability: "Agility", name: "stealth" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "acting" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "charioteering" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "courage" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "dancing" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "empathy" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "etiquette" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "expression" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "fabrication" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "herding" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "impersonation" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "inspiration" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "magnetism" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "mercantile" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "misdirection" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "patience" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "singing" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "taunt" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "teamwork" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "training (animal)" },
+		{ rank: 0, advancing: 0, ability: "Charisma", name: "ventrilioquism" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "agriculture" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "anatomy" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "arithmetic" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "astronomy" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "brewing" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "cartography" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "computer" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "cooking" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "electronics" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "engineering" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "fishing" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "herbalism" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "history" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "language (arcane)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "language (common)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "language (dwarvish)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "language (elvish)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "language (gnomish)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "language (minotaur)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "language (solamnic)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "logic" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "medicine" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "memory" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "metallurgy" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "schooling (arcane)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "schooling (common)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "schooling (dwarvish)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "schooling (elvish)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "schooling (minotaur)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "schooling (solamnic)" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "science" },
+		{ rank: 0, advancing: 0, ability: "Intelligence", name: "weaving" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "awareness (sight)" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "awareness (sound)" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "awareness (touch)" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "awareness (taste)" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "awareness (smell)" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "awareness (general)" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "concentration" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "debate" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "diplomacy" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "direction sense" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "entity" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "fire building" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "forgery" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "gaming (wisdom)" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "hunting" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "instrument" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "intuition" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "navigation" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "pilot" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "politics" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "read lips" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "research" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "snare/traps" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "survival" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "tracking" },
+		{ rank: 0, advancing: 0, ability: "Wisdom", name: "weather sense" },
 	];
 
 	for (var i = 0; i < 15; i++) {
@@ -279,15 +281,14 @@ function ModelCtrl($scope, $timeout, $filter) {
 		var o = { stamina: [] };
 		for (var i = 0; i < 12; i++) {
 			o.stamina[i] = 0;
-			for (var j = 3; j >= 0; j--) {
+			for (var j = 2; j >= 0; j--) {
 				if ($scope.stamina[i][j]) {
-					o.stamina[i] = j;
+					o.stamina[i] = j + 1;
 					break;
 				}
 			}
 		}
 
-		o.skills    = $scope.skills;
 		o.abilities = $scope.abilities;
 		o.name      = $scope.character_name;
 
@@ -302,9 +303,9 @@ function ModelCtrl($scope, $timeout, $filter) {
 		}
 
 		$.ajax({
-			url: "https://loreroller-cowens.dotcloud.com/save",
+			url: "http://0.0.0.0:3000/save",
 			dataType: 'jsonp',
-			data: { id: id, name: $scope.character_name, data: jsondata },
+			data: { id: id, name: $scope.character_name + "-body", data: jsondata },
 			success: function() {
 				try {
 					gapi.hangout.layout.displayNotice(name + " was saved");
@@ -314,6 +315,33 @@ function ModelCtrl($scope, $timeout, $filter) {
 				}
 			}
 		});
+
+		for (var i = 0; i < $scope.select_abilities.length; i++) {
+			var ability = $scope.select_abilities[i].name;
+	
+			var a = [];
+			for (var j = 0; j < $scope.skills.length; j++) {
+				if ($scope.skills[j].ability == ability) {
+					var o = {
+						ability:   $scope.skills[j].ability,
+						name:      $scope.skills[j].name,
+						rank:      $scope.skills[j].rank,
+						advancing: $scope.skills[j].advancing
+					};
+					a.push(o);
+				}
+			}
+
+			var jsondata = JSON.stringify(a);
+
+			$.ajax({
+				url: "http://0.0.0.0:3000/save",
+				dataType: 'jsonp',
+				data: { id: id, name: $scope.character_name + "-" + ability, data: jsondata },
+				success: function() {}
+			});
+		}
+
 		return;
 	}
 
@@ -326,25 +354,52 @@ function ModelCtrl($scope, $timeout, $filter) {
 		}
 
 		$.ajax({
-			url: "https://loreroller-cowens.dotcloud.com/load",
+			url: "http://0.0.0.0:3000/load",
 			dataType: 'jsonp',
-			data: { name: $scope.character_name, id: id },
+			data: { name: $scope.character_name + "-body", id: id },
 			success: function(data) {
-				for (m = 0; m <= 11; m++) {
+				for (var m = 0; m <= 11; m++) {
 					level = data.stamina[m];
-					for (n = 1; n <= level; n++) {
-						$scope.stamina[m][n] = true;
+					for (var n = 1; n <= level; n++) {
+						$scope.$apply(function() {
+							$scope.stamina[m][n - 1] = true;
+						});
 					}
-					for (n = level + 1; n <= 3; n++) {
-						$scope.stamina[m][n] = false;
+					for (var n = level + 1; n <= 3; n++) {
+						$scope.$apply(function() {
+							$scope.stamina[m][n - 1] = false;
+						});
 					}
 				}
-				$scope.skills    = data.skills;
-				$scope.abilities = data.abilities;
-				$scope.name      = data.character_name;
+				$scope.$apply(function() {
+					$scope.abilities = data.abilities;
+					$scope.name      = data.character_name;
+					$scope.skills    = [];
+				});
+				for (var i = 0; i < $scope.select_abilities.length; i++) {
+					var ability = $scope.select_abilities[i].name;
+					$.ajax({
+						url: "http://0.0.0.0:3000/load",
+						dataType: 'jsonp',
+						data: { name: $scope.character_name + "-" + ability, id: id },
+						success: function (a) {
+							$scope.$apply(function() {
+								for (var i = 0; i < a.length; i++) {
+									var o = {
+										name:      a[i].name,
+										rank:      a[i].rank,
+										advancing: a[i].advancing,
+										ability:   a[i].ability
+									};
+									$scope.skills.push(o);
+								}
+							});
+						}
+					});
+				}
 			}
 		});
-	}
+	};
 
 	$scope.roll = function() {
 		var pool;
@@ -481,7 +536,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$('.edit span').editable(function(value, settings) {
 			var num;
 			$scope.$apply(function() { 
-				num = value.match(/[1-9][0-9]+/)[0];
+				num = value.match(/[1-9][0-9]*/)[0];
 				$scope.custom_pool = parseInt(num);
 			});
 			return "Custom (" + num + ")";
@@ -496,12 +551,10 @@ function ModelCtrl($scope, $timeout, $filter) {
 			modal: false,
 			position: [ 0, 0 ],
 			open: function(e, ui) {
-				$scope.$apply(function() {
-					$scope.dialog.pools = true;
-				});
+				$scope.dialog.pools = true;
 			},
 			close: function(e, ui) {
-					$scope.dialog.pools = false;
+				$scope.dialog.pools = false;
 			},
 		});
 		$( "#info" ).dialog({

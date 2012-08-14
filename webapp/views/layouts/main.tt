@@ -1,4 +1,4 @@
-<html ng-app="ngSanitize">
+<html ng-app="LoreRoller">
 	<head>
 	<!-- old code needs this -->
 		<script type="text/javascript" src="<% platform %>/javascripts/jquery-1.7.2.min.js"></script>

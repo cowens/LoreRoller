@@ -74,7 +74,7 @@
 
 <div id="rolls" title="Rolls">
 	<ul>
-		<li ng-repeat="roll in rolls" ng-bind-html="$parent.rolls[$index]">
+		<li ng-repeat="roll in rolls" ng-bind-html="roll">
 	</ul>
 </div>
 
@@ -93,11 +93,11 @@
 			</tr>
 		</thead>
 		<tbody style="height: 300px; overflow: auto;">
-			<tr ng-repeat="skill in skills | filter:filter_skills">
+			<tr ng-repeat="skill in skills | filter:filter_skills | orderBy:'name'">
 				<td><input type="checkbox" ng-model="skill.use" /></td>
 				<td>{{skill.name}}</td>
-				<td><input type="number" ng-model="$parent.skills[$index].rank" /></td>
-				<td><input type="number" ng-model="$parent.skills[$index].advancing" /></td>
+				<td><input type="number" ng-model="skill.rank" /></td>
+				<td><input type="number" ng-model="skill.advancing" /></td>
 			<tr>
 		</tbody>
 	</table>
