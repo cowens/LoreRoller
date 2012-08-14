@@ -303,7 +303,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		}
 
 		$.ajax({
-			url: "http://0.0.0.0:3000/save",
+			url: platform + "/save",
 			dataType: 'jsonp',
 			data: { id: id, name: $scope.character_name + "-body", data: jsondata },
 			success: function() {
@@ -335,7 +335,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 			var jsondata = JSON.stringify(a);
 
 			$.ajax({
-				url: "http://0.0.0.0:3000/save",
+				url: platform + "/save",
 				dataType: 'jsonp',
 				data: { id: id, name: $scope.character_name + "-" + ability, data: jsondata },
 				success: function() {}
@@ -354,7 +354,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		}
 
 		$.ajax({
-			url: "http://0.0.0.0:3000/load",
+			url: platform + "/load",
 			dataType: 'jsonp',
 			data: { name: $scope.character_name + "-body", id: id },
 			success: function(data) {
@@ -379,7 +379,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 				for (var i = 0; i < $scope.select_abilities.length; i++) {
 					var ability = $scope.select_abilities[i].name;
 					$.ajax({
-						url: "http://0.0.0.0:3000/load",
+						url: platform + "/load",
 						dataType: 'jsonp',
 						data: { name: $scope.character_name + "-" + ability, id: id },
 						success: function (a) {
