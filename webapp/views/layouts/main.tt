@@ -22,9 +22,7 @@
 		<link type="text/css" href="<% platform %>/css/<% css %>.css" rel="Stylesheet" />
 		<script type="text/javascript" src="<% platform %>/<% js %>.js"></script>
 
-<!--
 		<script src="//hangoutsapi.talkgadget.google.com/hangouts/_/api/hangout.js?v=1.1"></script>
--->
 	</head>
 	<body ng-controller="ModelCtrl">
 	<% content %>
