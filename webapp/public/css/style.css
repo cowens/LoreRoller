@@ -10,6 +10,23 @@ li {
 #skills input[type=number] {
 	width: 3.5em;
 }
+#skills_list { height: 300px; overflow: auto; }
+#inventory_container {
+	height: 10em;
+	overflow: auto;
+}
+.display_item dt {
+	float: left;
+	clear: left;
+	width: 7em;
+}
+.display_item dd {
+	float: left;
+}
+.display_item dd input {
+	width: 7em;
+}
+
 
 .stamina_left {
 	display: inline-block;

@@ -1,6 +1,8 @@
 package LoreRoller;
 use Dancer ':syntax';
 
+use JSON;
+
 our $VERSION = '0.2';
 
 my $platform = -f "$ENV{HOME}/environment.json" ? 
@@ -20,19 +22,40 @@ get "/loreroller.xml" => sub {
 	template "index.tt", { platform => $platform, css => 'loreroller', js => "loreroller" }, { layout => "xml" };
 };
 
+sub numify {
+	my $s = shift;
+	my ($n) = $s =~ /-([0-9]+)$/;
+	return $n;
+}
+
 my $load = sub {
 	my $callback = param "callback";
 	my $name     = param "name";
 	my $id       = param "id";
+	my $base     = "$ENV{HOME}/data/$id-$name";
 
-	debug "cb [$callback] n [$name] i [$id]";
 	my $save = do {
 		local $/;
-		open my $fh, "<", "$ENV{HOME}/data/$id-$name"
-			or die "could not open $name: $!";
-		<$fh>;
+		open my $fh, "<", $base
+			or die "could not open $base: $!";
+		decode_json <$fh>;
 	};
-	debug $save;
+
+	if ($name =~ /-body$/) {
+		for my $file (sort { numify($a) <=> numify($b) } <$base-*>) {
+			my $inventory = do {
+				local $/;
+				open my $fh, "<", $file
+					or die "could not open $base: $!";
+				decode_json <$fh>;
+			};
+			for my $item (@$inventory) {
+				push @{$save->{inventory}}, $item;
+			}
+		}
+	}
+
+	$save = encode_json $save;
 	content_type 'application/json';
 	return qq/$callback($save)/;
 };
@@ -44,7 +67,6 @@ my $save = sub {
 	my $name     = param "name";
 	my $id       = param "id";
 	my $data     = param "data";
-	warn "data is [$data]";	
 
 	$name =~ s{/}{%}g;
 	$id =~ s{[^0-9]}{}g;

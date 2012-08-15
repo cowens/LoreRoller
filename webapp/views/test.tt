@@ -94,13 +94,13 @@
 				<th>Advancing</th>
 			</tr>
 		</thead>
-		<tbody style="height: 300px; overflow: auto;">
+		<tbody id="skills_list">
 			<tr ng-repeat="skill in skills | filter:filter_skills | orderBy:'name'">
 				<td><input type="checkbox" ng-model="skill.use" /></td>
 				<td>{{skill.name}}</td>
 				<td><input type="number" ng-model="skill.rank" /></td>
 				<td><input type="number" ng-model="skill.advancing" /></td>
-			<tr>
+			</tr>
 		</tbody>
 	</table>
 </div>
@@ -128,6 +128,54 @@
 	<button ng-click="load()">Load</button>
 </div>
 
+<div id="inventory" title="Inventory">
+	<select ng-model="add_item_type" ng-options="item_type for item_type in item_types"></select>
+	<button id="open_add_inventory" ng-click="open_add_item()">add</button><br />
+	<br />
+	Search: <input ng-model="inventory_search.name" />
+	<div id="inventory_container">
+		<ul id="inventory_list">
+			<li ng-repeat="item in inventory | filter:inventory_search" ng-dblclick="display_item(item)">{{ item.name }}
+		</ul>
+	</div>
+</div>
+
+<div class="display_item" id="display_item" title="Item information">
+	<dl>
+		<dt>Name:       <dd><input ng-model="item.name" /></dd>
+		<dt>Count:      <dd><input type="number" ng-model="item.count" /></dd>
+	</dl>
+	<button ng-show="show_add_item" ng-click="add_item(item)">add</button>
+	<button ng-hide="show_add_item" ng-click="delete_item(item)">delete</button>
+</div>
+<div class="display_item" id="display_weapon" title="Weapon information">
+	<dl>
+		<dt>Name:       <dd><input ng-model="weapon.name" /></dd>
+		<dt>Two handed: <dd><input ng-model="weapon.two_handed" /></dd>
+		<dt>Off handed: <dd><input ng-model="weapon.off_handed" /></dd>
+		<dt>Power:      <dd><input ng-model="weapon.power" /></dd>
+		<dt>Resilience: <dd><input ng-model="weapon.resilience" /></dd>
+		<dt>Initiative: <dd><input ng-model="weapon.init" /></dd>
+		<dt>Damage:     <dd><select ng-model="weapon.damage" ng-options="damage for damage in damage_types"></select></dd>
+		<dt>Equip:      <dd><input type="checkbox" ng-model="weapon.equip" /></dd>
+	</dl>
+	<button ng-show="show_add_item" ng-click="add_item(weapon)">add</button>
+	<button ng-hide="show_add_item" ng-click="delete_item(weapon)">delete</button>
+</div>
+<div class="display_item" id="display_armor" title="Armor information">
+	<dl>
+		<dt>Name:       <dd><input ng-model="armor.name" /></dd>
+		<dt>Rating:     <dd><input ng-model="armor.rating" /></dd>
+		<dt>Power:      <dd><input ng-model="armor.power" /></dd>
+		<dt>Resilience: <dd><input ng-model="armor.resilience" /></dd>
+		<dt>Finesse:    <dd><input ng-model="armor.finesse" /></dd>
+		<dt>Initiative: <dd><input ng-model="armor.init" /></dd>
+		<dt>Equip:      <dd><input type="checkbox" ng-model="armor.equip" /></dd>
+	</dl>
+	<button ng-show="show_add_item" ng-click="add_item(armor)">add</button>
+	<button ng-hide="show_add_item" ng-click="delete_item(armor)">delete</button>
+</div>
+
 <div class="bottom">
 	<div id="config" class="menu">
 		<div ng-click="toggle('pools')">Pools</div>
@@ -135,6 +183,7 @@
 		<div ng-click="toggle('stamina')">Stamina</div>
 		<div ng-click="toggle('stats')">Stats</div>
 		<div ng-click="toggle('skills')">Skills</div>
+		<div ng-click="toggle('inventory')">Inventory</div>
 		<div ng-click="toggle('save')">Save/load character</div>
 	</div>
 	<div class="header" ng-click="toggle_menu()">

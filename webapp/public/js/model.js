@@ -2,6 +2,36 @@ var LoreRoller = angular.module('LoreRoller', ['ngSanitize']);
 
 function ModelCtrl($scope, $timeout, $filter) {
 
+	$scope.inventory_search = {};
+	$scope.show_add_item = false;
+	$scope.item_types = [
+		'item',
+		'weapon',
+		'armor'
+	];
+	$scope.add_item_type = "item";
+	$scope.open_add_item = function() {
+		var item;
+		switch ($scope.add_item_type) {
+			case "weapon":
+				item = $scope.weapon = { type: "weapon", damage: "ultralight" };
+				break;
+			case "armor":
+				item = $scope.armor = { type: "armor" };
+				break;
+			default:
+				item = $scope.item = { type: "item", count: 1 };
+		}
+		$scope.show_add_item = true;
+		$scope.display_item(item);
+	};
+	$scope.damage_types = [
+		'ultralight',
+		'light',
+		'moderate',
+		'heavy',
+		'ultraheavy'
+	];
 	$scope.faith = 1;
 	$scope.virtue = 3;
 	$scope.dialog = {
@@ -11,6 +41,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		stamina: true,
 		skills: true,
 		save: false,
+		inventory: true,
 	};
 
 	$scope.select_abilities = [
@@ -98,6 +129,11 @@ function ModelCtrl($scope, $timeout, $filter) {
 			$scope.stamina[i][j] = false;
 		}
 	}
+
+	$scope.weapon    = {};
+	$scope.item      = {};
+	$scope.armor     = {};
+	$scope.inventory = [];
 
 	//find a way to handle things like crafting and language
 	$scope.rolls = [];
@@ -244,6 +280,11 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$scope.rolls.push("&nbsp;");
 	}
 
+	$scope.display_item = function(item) {
+		$scope[item.type] = item;
+		$("#display_" + item.type).dialog("open");
+	}
+
 	$scope.filter_skills = function(skill) {
 		var regex = new RegExp($scope.skill_search, "i");
 		var show;
@@ -265,7 +306,20 @@ function ModelCtrl($scope, $timeout, $filter) {
 			rank: $scope.skill_rank,
 			advancing: $scope.skill_advancing,
 		});
-	}
+	};
+
+	$scope.delete_item = function(item) {
+		var i = $scope.inventory.indexOf(item);
+		if (i >= 0) {
+			$scope.inventory.splice(i, 1);
+		}
+		$("#display_" + item.type).dialog("close");
+	};
+	$scope.add_item = function(item) {
+		$scope.inventory.push(item);
+		$scope.show_add_item = false;
+		$("#display_" + item.type).dialog("close");
+	};
 
 	$scope.toggle_menu = function() {
 		$('#config').toggle("slide", { direction: "down" }, "slow");
@@ -321,6 +375,24 @@ function ModelCtrl($scope, $timeout, $filter) {
 				}
 			}
 		});
+
+		var chunk = [];
+		var n = 0;
+		for (var i = 0; i < $scope.inventory.length; i++) {
+			chunk.push($scope.inventory[i]);
+			var jsondata = JSON.stringify(chunk);
+			if (jsondata.length < 3000 && $scope.inventory.length != (i + 1)) {
+				continue;
+			}
+			$.ajax({
+				url: platform + "/save",
+				dataType: 'jsonp',
+				data: { id: id, name: $scope.character_name + "-body-" + n, data: jsondata },
+				success: function() {}
+			});
+			chunk = [];
+			n++;
+		}
 
 		for (var i = 0; i < $scope.select_abilities.length; i++) {
 			var ability = $scope.select_abilities[i].name;
@@ -382,8 +454,10 @@ function ModelCtrl($scope, $timeout, $filter) {
 					$scope.name      = data.character_name;
 					$scope.virtue    = data.virtue;
 					$scope.faith     = data.faith;
+					$scope.inventory = data.inventory;
 					$scope.skills    = [];
 				});
+
 				for (var i = 0; i < $scope.select_abilities.length; i++) {
 					var ability = $scope.select_abilities[i].name;
 					$.ajax({
@@ -670,9 +744,64 @@ function ModelCtrl($scope, $timeout, $filter) {
 					$scope.dialog.save = false;
 			},
 		});
+		$( "#inventory" ).dialog({
+			autoOpen: true,
+			modal: false,
+			open: function(e, ui) {
+				$scope.dialog.inventory = true;
+			},
+			close: function(e, ui) {
+				$scope.dialog.inventory = false;
+			},
+		});
+		$( "#add_items" ).dialog({
+			autoOpen: false,
+			modal: false,
+			open: function(e, ui) {
+				$scope.dialog.add_items = true;
+			},
+			close: function(e, ui) {
+				$scope.dialog.add_items = false;
+			},
+		});
+		$( "#display_armor" ).dialog({
+			autoOpen: false,
+			modal: false,
+			width: "20em",
+			open: function(e, ui) {
+				$scope.dialog.display_armor = true;
+			},
+			close: function(e, ui) {
+				$scope.dialog.display_armor = false;
+			},
+		});
+		$( "#display_weapon" ).dialog({
+			autoOpen: false,
+			modal: false,
+			width: "20em",
+			open: function(e, ui) {
+				$scope.dialog.display_weapon = true;
+			},
+			close: function(e, ui) {
+				$scope.dialog.display_weapon = false;
+			},
+		});
+		$( "#display_item" ).dialog({
+			autoOpen: false,
+			modal: false,
+			width: "20em",
+			open: function(e, ui) {
+				$scope.dialog.display_item = true;
+			},
+			close: function(e, ui) {
+				$scope.dialog.display_item = false;
+			},
+		});
 
 		$(".skill_edit").button();
 		$('#skills_table').tableScroll({height:200});
+		$("#inventory_list").sortable();
+		$("#inventory_list").disableSelection();
 
 		try {
 			gapi.hangout.data.onStateChanged.add(
