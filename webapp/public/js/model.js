@@ -387,7 +387,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 			$.ajax({
 				url: platform + "/save",
 				dataType: 'jsonp',
-				data: { id: id, name: $scope.character_name + "-body-" + n, data: jsondata },
+				data: { id: id, name: $scope.character_name + "-inv-" + n, data: jsondata },
 				success: function() {}
 			});
 			chunk = [];
@@ -434,7 +434,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$.ajax({
 			url: platform + "/load",
 			dataType: 'jsonp',
-			data: { name: $scope.character_name + "-body", id: id },
+			data: { name: $scope.character_name, id: id },
 			success: function(data) {
 				for (var m = 0; m <= 11; m++) {
 					level = data.stamina[m];
@@ -455,30 +455,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 					$scope.virtue    = data.virtue;
 					$scope.faith     = data.faith;
 					$scope.inventory = data.inventory;
-					$scope.skills    = [];
+					$scope.skills    = data.skills;
 				});
-
-				for (var i = 0; i < $scope.select_abilities.length; i++) {
-					var ability = $scope.select_abilities[i].name;
-					$.ajax({
-						url: platform + "/load",
-						dataType: 'jsonp',
-						data: { name: $scope.character_name + "-" + ability, id: id },
-						success: function (a) {
-							$scope.$apply(function() {
-								for (var i = 0; i < a.length; i++) {
-									var o = {
-										name:      a[i].name,
-										rank:      a[i].rank,
-										advancing: a[i].advancing,
-										ability:   a[i].ability
-									};
-									$scope.skills.push(o);
-								}
-							});
-						}
-					});
-				}
 			}
 		});
 	};

@@ -36,23 +36,31 @@ my $load = sub {
 
 	my $save = do {
 		local $/;
-		open my $fh, "<", $base
-			or die "could not open $base: $!";
+		open my $fh, "<", "$base-body"
+			or die "could not open $base-body: $!";
 		decode_json <$fh>;
 	};
 
-	if ($name =~ /-body$/) {
-		for my $file (sort { numify($a) <=> numify($b) } <$base-*>) {
-			my $inventory = do {
-				local $/;
-				open my $fh, "<", $file
-					or die "could not open $base: $!";
-				decode_json <$fh>;
-			};
-			for my $item (@$inventory) {
-				push @{$save->{inventory}}, $item;
-			}
-		}
+	for my $file (sort { numify($a) <=> numify($b) } <$base-inv-*>) {
+		my $inventory = do {
+			local $/;
+			open my $fh, "<", $file
+				or die "could not open $base: $!";
+			decode_json <$fh>;
+		};
+		push @{$save->{inventory}}, @$inventory;
+	}
+
+	for my $file (<$base-*>) {
+		next if $file =~ /-inv-[0-9]+$/;
+		next if $file =~ /-body$/;
+		my $skills = do {
+			local $/;
+			open my $fh, "<", $file
+				or die "could not open $base: $!";
+			decode_json <$fh>;
+		};
+		push @{$save->{skills}}, @$skills;
 	}
 
 	$save = encode_json $save;
