@@ -345,6 +345,12 @@ function ModelCtrl($scope, $timeout, $filter) {
 			inventory:  $scope.inventory,
 			skills:     $scope.skills
 		});
+		var array = LZW.compress(jsondata);
+		var s = "";
+		for (var i = 0; i < array.length; i++) {
+			s += String.fromCharCode(array[i]);
+		}
+		var compresseddata = Base64.encode(s);
 
 		var id;
 		try {
@@ -357,7 +363,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$.ajax({
 			url: platform + "/save",
 			dataType: 'jsonp',
-			data: { id: id, name: $scope.character_name, data: jsondata },
+			data: { id: id, name: $scope.character_name, data: compresseddata },
 			success: function() {
 				try {
 					gapi.hangout.layout.displayNotice(name + " was saved");
@@ -383,7 +389,15 @@ function ModelCtrl($scope, $timeout, $filter) {
 			url: platform + "/load",
 			dataType: 'jsonp',
 			data: { name: $scope.character_name, id: id },
-			success: function(data) {
+			success: function(compressed) {
+				var unb64 = Base64.decode(compressed);
+				var array = [];
+				for (var i = 0; i < unb64.length; i++) {
+					array.push(unb64.charCodeAt(i));
+				}
+				var jsondata = LZW.decompress(array);
+				var data = jQuery.parseJSON(jsondata);
+
 				$scope.$apply(function() {
 					$scope.stamina   = data.stamina;
 					$scope.abilities = data.abilities;
@@ -470,7 +484,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 				data = "[]";
 			}
 
-			ata = jQuery.parseJSON(data);
+			data = jQuery.parseJSON(data);
 		} catch(e) {
 			console.log(e);
 			data = $scope.rolls;

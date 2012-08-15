@@ -14,6 +14,8 @@
 		<script type="text/javascript" src="<% platform %>/js/angular-sanitize-1.0.1.min.js"></script>
 		<script type="text/javascript" src="<% platform %>/js/jeditable.js"></script>
 		<script type="text/javascript" src="<% platform %>/js/jquery.tablescroll.js"></script>
+		<script type="text/javascript" src="<% platform %>/js/lzw.js"></script>
+		<script type="text/javascript" src="<% platform %>/js/base64.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="<% platform %>/css/jquery.tablescroll.css"/>
 
@@ -21,7 +23,6 @@
 		<link type="text/css" href="<% platform %>/css/smoothness/jquery-ui-1.8.22.custom.css" rel="Stylesheet" />
 		<link type="text/css" href="<% platform %>/css/<% css %>.css" rel="Stylesheet" />
 		<script type="text/javascript" src="<% platform %>/<% js %>.js"></script>
-
 		<script src="//hangoutsapi.talkgadget.google.com/hangouts/_/api/hangout.js?v=1.1"></script>
 	</head>
 	<body ng-controller="ModelCtrl">
