@@ -336,23 +336,15 @@ function ModelCtrl($scope, $timeout, $filter) {
 	}
 
 	$scope.save = function() {
-		var o = { stamina: [] };
-		for (var i = 0; i < 12; i++) {
-			o.stamina[i] = 0;
-			for (var j = 2; j >= 0; j--) {
-				if ($scope.stamina[i][j]) {
-					o.stamina[i] = j + 1;
-					break;
-				}
-			}
-		}
-
-		o.abilities = $scope.abilities;
-		o.name      = $scope.character_name;
-		o.faith     = $scope.faith;
-		o.virtue    = $scope.virtue;
-
-		var jsondata = JSON.stringify(o);
+		var jsondata = JSON.stringify({
+			stamina:    $scope.stamina,
+			abilities:  $scope.abilities,
+			name:       $scope.character_name,
+			faith:      $scope.faith,
+			virtue:     $scope.virtue,
+			inventory:  $scope.inventory,
+			skills:     $scope.skills
+		});
 
 		var id;
 		try {
@@ -365,7 +357,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$.ajax({
 			url: platform + "/save",
 			dataType: 'jsonp',
-			data: { id: id, name: $scope.character_name + "-body", data: jsondata },
+			data: { id: id, name: $scope.character_name, data: jsondata },
 			success: function() {
 				try {
 					gapi.hangout.layout.displayNotice(name + " was saved");
@@ -375,51 +367,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 				}
 			}
 		});
-
-		var chunk = [];
-		var n = 0;
-		for (var i = 0; i < $scope.inventory.length; i++) {
-			chunk.push($scope.inventory[i]);
-			var jsondata = JSON.stringify(chunk);
-			if (jsondata.length < 3000 && $scope.inventory.length != (i + 1)) {
-				continue;
-			}
-			$.ajax({
-				url: platform + "/save",
-				dataType: 'jsonp',
-				data: { id: id, name: $scope.character_name + "-inv-" + n, data: jsondata },
-				success: function() {}
-			});
-			chunk = [];
-			n++;
-		}
-
-		for (var i = 0; i < $scope.select_abilities.length; i++) {
-			var ability = $scope.select_abilities[i].name;
-	
-			var a = [];
-			for (var j = 0; j < $scope.skills.length; j++) {
-				if ($scope.skills[j].ability == ability) {
-					var o = {
-						ability:   $scope.skills[j].ability,
-						name:      $scope.skills[j].name,
-						rank:      $scope.skills[j].rank,
-						advancing: $scope.skills[j].advancing
-					};
-					a.push(o);
-				}
-			}
-
-			var jsondata = JSON.stringify(a);
-			alert(jsondata.length);
-
-			$.ajax({
-				url: platform + "/save",
-				dataType: 'jsonp',
-				data: { id: id, name: $scope.character_name + "-" + ability, data: jsondata },
-				success: function() {}
-			});
-		}
 
 		return;
 	}
@@ -437,20 +384,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 			dataType: 'jsonp',
 			data: { name: $scope.character_name, id: id },
 			success: function(data) {
-				for (var m = 0; m <= 11; m++) {
-					level = data.stamina[m];
-					for (var n = 1; n <= level; n++) {
-						$scope.$apply(function() {
-							$scope.stamina[m][n - 1] = true;
-						});
-					}
-					for (var n = level + 1; n <= 3; n++) {
-						$scope.$apply(function() {
-							$scope.stamina[m][n - 1] = false;
-						});
-					}
-				}
 				$scope.$apply(function() {
+					$scope.stamina   = data.stamina;
 					$scope.abilities = data.abilities;
 					$scope.name      = data.character_name;
 					$scope.virtue    = data.virtue;

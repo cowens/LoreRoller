@@ -17,7 +17,6 @@ WriteMakefile(
 	    'Dancer'     => 1.3030,
 	    'Plack'      => 0.9974,
 	    'Template'   => 2.24,
-	    'JSON'       => 2.53,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'LoreRoller-*' },

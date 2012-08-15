@@ -1,8 +1,6 @@
 package LoreRoller;
 use Dancer ':syntax';
 
-use JSON;
-
 our $VERSION = '0.2';
 
 my $platform = -f "$ENV{HOME}/environment.json" ? 
@@ -22,48 +20,19 @@ get "/loreroller.xml" => sub {
 	template "index.tt", { platform => $platform, css => 'loreroller', js => "loreroller" }, { layout => "xml" };
 };
 
-sub numify {
-	my $s = shift;
-	my ($n) = $s =~ /-([0-9]+)$/;
-	return $n;
-}
-
 my $load = sub {
 	my $callback = param "callback";
 	my $name     = param "name";
 	my $id       = param "id";
-	my $base     = "$ENV{HOME}/data/$id-$name";
+	my $file     = "$ENV{HOME}/data/$id-$name";
 
 	my $save = do {
 		local $/;
-		open my $fh, "<", "$base-body"
-			or die "could not open $base-body: $!";
-		decode_json <$fh>;
+		open my $fh, "<", $file
+			or die "could not open $file: $!";
+		<$fh>;
 	};
 
-	for my $file (sort { numify($a) <=> numify($b) } <$base-inv-*>) {
-		my $inventory = do {
-			local $/;
-			open my $fh, "<", $file
-				or die "could not open $base: $!";
-			decode_json <$fh>;
-		};
-		push @{$save->{inventory}}, @$inventory;
-	}
-
-	for my $file (<$base-*>) {
-		next if $file =~ /-inv-[0-9]+$/;
-		next if $file =~ /-body$/;
-		my $skills = do {
-			local $/;
-			open my $fh, "<", $file
-				or die "could not open $base: $!";
-			decode_json <$fh>;
-		};
-		push @{$save->{skills}}, @$skills;
-	}
-
-	$save = encode_json $save;
 	content_type 'application/json';
 	return qq/$callback($save)/;
 };
