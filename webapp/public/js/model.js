@@ -411,6 +411,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 			}
 
 			var jsondata = JSON.stringify(a);
+			alert(jsondata.length);
 
 			$.ajax({
 				url: platform + "/save",
