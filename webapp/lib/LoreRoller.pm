@@ -35,7 +35,7 @@ my $load = sub {
 
 	debug $save;
 	content_type 'application/json';
-	return qq/$callback('$save')/;
+	return qq/$callback($save)/;
 };
 post '/load' => $load;
 get '/load' => $load;
