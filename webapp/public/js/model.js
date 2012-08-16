@@ -336,7 +336,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 	}
 
 	$scope.save = function() {
-		var jsondata = JSON.stringify({
+		var o = {
 			stamina:    $scope.stamina,
 			abilities:  $scope.abilities,
 			name:       $scope.character_name,
@@ -344,7 +344,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 			virtue:     $scope.virtue,
 			inventory:  $scope.inventory,
 			skills:     $scope.skills
-		});
+		};
+		var jsondata = angular.toJson(o);
 		var array = LZW.compress(jsondata);
 		var s = "";
 		for (var i = 0; i < array.length; i++) {
@@ -498,7 +499,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 			data.push("&nbsp;");
 		}
 		try {
-			gapi.hangout.data.setValue("rolls", JSON.stringify(data));
+			gapi.hangout.data.setValue("rolls", angular.toJson(data));
 		} catch(e) {
 			console.log(e);
 		}
