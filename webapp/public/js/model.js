@@ -378,7 +378,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 			data: { id: id, name: $scope.character_name, data: jsondata },
 			success: function() {
 				try {
-					gapi.hangout.layout.displayNotice(name + " was saved");
+					gapi.hangout.layout.displayNotice($scope.character_name + " was saved");
 				} catch(e) {
 					console.log(e);
 					alert($scope.character_name + " was saved");
