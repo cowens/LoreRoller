@@ -3,11 +3,6 @@
 		<script>
 			var platform = "<% platform %>";
 		</script>
-	<!-- old code needs this -->
-		<script type="text/javascript" src="<% platform %>/javascripts/jquery-1.7.2.min.js"></script>
-		<script type="text/javascript" src="<% platform %>/javascripts/jquery-ui-1.8.22.custom.min.js"></script>
-		<script type="text/javascript" src="<% platform %>/javascripts/sketch.js"></script>
-	<!-- new code needs this -->
 		<script type="text/javascript" src="<% platform %>/js/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="<% platform %>/js/jquery-ui-1.8.22.custom.min.js"></script>
 		<script type="text/javascript" src="<% platform %>/js/angular-1.0.1.min.js"></script>
@@ -16,11 +11,9 @@
 		<script type="text/javascript" src="<% platform %>/js/jquery.tablescroll.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="<% platform %>/css/jquery.tablescroll.css"/>
-
-	<!-- common -->
 		<link type="text/css" href="<% platform %>/css/smoothness/jquery-ui-1.8.22.custom.css" rel="Stylesheet" />
-		<link type="text/css" href="<% platform %>/css/<% css %>.css" rel="Stylesheet" />
-		<script type="text/javascript" src="<% platform %>/<% js %>.js"></script>
+		<link type="text/css" href="<% platform %>/css/style.css" rel="Stylesheet" />
+		<script type="text/javascript" src="<% platform %>/js/model.js"></script>
 		<script src="//hangoutsapi.talkgadget.google.com/hangouts/_/api/hangout.js?v=1.1"></script>
 	</head>
 	<body ng-controller="ModelCtrl">

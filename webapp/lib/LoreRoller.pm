@@ -7,17 +7,12 @@ my $platform = -f "$ENV{HOME}/environment.json" ?
 	"https://loreroller-cowens.dotcloud.com" : "http://0.0.0.0:3000";
 
 get "/" => sub {
-	template "index.tt", { platform => $platform, css => 'loreroller', js => "loreroller" };
-};
-
-get "/loreroller.js" => sub {
-	content_type 'application/javascript';
-	template "loreroller.js.tt", { platform => $platform }, { layout => "js" };
+	template "index.tt", { platform => $platform };
 };
 
 get "/loreroller.xml" => sub {
 	content_type 'text/xml';
-	template "index.tt", { platform => $platform, css => 'loreroller', js => "loreroller" }, { layout => "xml" };
+	template "index.tt", { platform => $platform }, { layout => "xml" };
 };
 
 my $load = sub {
@@ -33,7 +28,6 @@ my $load = sub {
 		<$fh>;
 	};
 
-	debug $save;
 	content_type 'application/json';
 	return qq/$callback($save)/;
 };
@@ -58,19 +52,7 @@ my $save = sub {
 	return qq/$callback({ "status": "saved" })/;
 };
 
-get "/test" => sub {
-	template "test.tt", { platform => $platform, css => "style", js => 'js/model' };
-};
-get "/test.xml" => sub {
-	content_type 'text/xml';
-	template "test.tt", { platform => $platform, css => "style", js => 'js/model' }, { layout => "xml" };
-};
-
 post "/save" => $save;
 get "/save" => $save;
-
-get "/expr" => sub {
-	template "expr.tt";
-};
 
 true;

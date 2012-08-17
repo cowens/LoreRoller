@@ -1,93 +1,192 @@
-<div id="info" class="ui-widget-content drag">
-	<center>Info</center>
-	<div class="info">
-		Name: <input type="text" id="name"></input><br />
-		Focus: <span id="focus">0</span><br />
-		Sounds: <input type="checkbox" name="sounds"></input><br />
-		<center>Show</center>
-		Pools:   <input type="checkbox" checked="1" name="pools"></input><br />
-		Stamina: <input type="checkbox" checked="1" name="stam"></input><br />
-		Odds:    <input type="checkbox" checked="1" name="odds"></input><br />
-		Rolls:   <input type="checkbox" checked="1" name="output"></input><br />
-		Whiteboard: <input type="checkbox" name="whiteboard"></input><br />
-		<input type="button" id="load" value="load"></input>
-		<input type="button" id="save" value="save"></input>
+<div id="stats" title="Stats">
+	<ul>
+		<li>Abilities
+			<div ng-repeat="ability_group in abilities">
+				<ul>
+					<li ng-repeat="ability in ability_group.abilities">{{ability.name}}: <input type="number" ng-model="ability.value" />
+				</ul>
+			</div>
+		</li>
+		<li>Pools
+			<div ng-repeat="pool_group in pools">
+				<ul>
+					<li ng-repeat="pool in pool_group">{{pool.name}}: {{pool.value()}}
+				</ul>
+			</div>
+		</li>
+		<li>focus: {{ pools[2][1].value() }}
+		<li>faith: <span id="faith">{{ faith }}</span>
+		<li>virtue: <span id="virtue">{{ virtue }}</span>
+	</ul>
+</div>
+
+<div id="pools" title="Pools">
+		<div class="pool_group" ng-repeat="pool_group in pools">
+			<div class="pool" ng-repeat="pool in pool_group">
+				<input ng-model="$parent.$parent.current_pool" type="radio" name="pools" id="{{pool.name}}" value="{{pool.name}}" />
+				<label class="{{pool.class}}" for="{{pool.name}}">{{pool.name}}</label>
+			</div>
+		</div>
+		<div id="mult">
+			<span class="pool_modifier">Multiplier</span>
+			<input name="mult" type="radio" ng-model="multiplier" id="1x" value="1" />
+			<label for="1x">1x</label>
+			<input name="mult" type="radio" ng-model="multiplier" id="2x" value="2" />
+			<label for="2x">2x</label>
+			<input name="mult" type="radio" ng-model="multiplier" id="3x" value="3" />
+			<label for="3x">3x</label>
+		</div>
+		<div id="prof">
+			<span class="pool_modifier">Proficiency</span>
+			<input name="prof" type="radio" ng-model="proficiency" id="prof1" value="1" />
+			<label for="prof1">1</label>
+			<input name="prof" type="radio" ng-model="proficiency" id="prof2" value="2" />
+			<label for="prof2">2</label>
+			<input name="prof" type="radio" ng-model="proficiency" id="prof3" value="3" />
+			<label for="prof3">3</label>
+			<input name="prof" type="radio" ng-model="proficiency" id="prof4" value="4" />
+			<label for="prof4">4</label>
+			<input name="prof" type="radio" ng-model="proficiency" id="prof5" value="5" />
+			<label for="prof5">5</label>
+			<input name="prof" type="radio" ng-model="proficiency" id="prof6" value="6" />
+			<label for="prof6">6</label>
+		</div>
+		<button id="roll_button" ng-click="roll()">Roll</button>
+
+</div>
+
+<div id="stamina" title="Stamina">
+	<div class="stamina_left">
+		<div ng-repeat="i in [1,2,3,4,5,6]">
+			<input type="checkbox" id="s{{$index}}_0" ng-model="stamina[$index][0]" />
+			<input type="checkbox" id="s{{$index}}_1" ng-model="stamina[$index][1]" />
+			<input type="checkbox" id="s{{$index}}_2" ng-model="stamina[$index][2]" />
+			{{ i }}
+		</div>
+	</div>
+	<div class="stamina_right">
+		<div ng-repeat="i in [8,10,12,14,16,18]">
+			<input type="checkbox" id="s{{$index+6}}_0" ng-model="stamina[$index+6][0]" />
+			<input type="checkbox" id="s{{$index+6}}_1" ng-model="stamina[$index+6][1]" />
+			<input type="checkbox" id="s{{$index+6}}_2" ng-model="stamina[$index+6][2]" />
+			{{ i }}
+		</div>
 	</div>
 </div>
 
-<div id="pools" class="ui-widget-content drag">
-	<center>Pools</center>
-	<div class="pools">
-		<table>
-<% FOR pools IN [ [ "power", "resilience", "finesse" ], ["presence", "deduction", "attunement" ], [ "ego", "comprehension", "custom" ] ] -%>
+<div id="rolls" title="Rolls">
+	<ul>
+		<li ng-repeat="roll in rolls" ng-bind-html="roll">
+	</ul>
+</div>
+
+<div id="skills" title="Skills">
+	<button id="open_add_skills" ng-click="toggle('add_skills')">add skills</button>
+	<input type="checkbox" ng-model="show_unknown_skills">Show unknown skills</input>
+	<br />
+	Search: <input ng-model="skill_search" />
+	<table id="skills_table">
+		<thead>
 			<tr>
-<% FOR pool IN pools -%>
-				<td>
-					<input type="radio" name="pool" value="<% pool %>" id="<% pool %>pool" <% IF pool == "power" %>checked="1"<% END %>><% IF pool == "ego" %>Ego/Willpower<% ELSE %><% pool | ucfirst %><% END %></input>
-					<input type="text" class="pool_entry" value="5" id="<% pool %>"></input>
-				</td>
-<%- END %>
+				<th>Use</th>
+				<th>Skill</th>
+				<th>Rank</th>
+				<th>Advancing</th>
 			</tr>
-<% END %>		</table>
-		<div class="multi">
-			Multiplier:
-			<input type="radio" name="multi" value="1" checked="1" id="multi1">1x</input>
-			<input type="radio" name="multi" value="2" id="multi2">2x</input>
-			<input type="radio" name="multi" value="3" id="multi3">3x</input>
-		</div>
-
-		<div class="prof">
-			Proficiency:
-			<input type="radio" name="prof" id="prof1" value="1">1</input>
-			<input type="radio" name="prof" id="prof2" value="2">2</input>
-			<input type="radio" name="prof" id="prof3" value="3" checked="1">3</input>
-			<input type="radio" name="prof" value="4">4</input>
-			<input type="radio" name="prof" value="5">5</input>
-			<input type="radio" name="prof" value="6">6</input>
-		</div>
-		<input id="roll_button" type="button" value="roll" onclick="roll()"></input>
-	</div>
+		</thead>
+		<tbody id="skills_list">
+			<tr ng-repeat="skill in skills | filter:filter_skills | orderBy:'name'">
+				<td><input type="checkbox" ng-model="skill.use" /></td>
+				<td>{{skill.name}}</td>
+				<td><input type="number" ng-model="skill.rank" /></td>
+				<td><input type="number" ng-model="skill.advancing" /></td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 
-<div id="stam" class="ui-widget-content drag">
-	<center>Stamina</center>
-	<div id="lstam">
-<% FOR n IN [1 .. 6] %>
-		<input type="checkbox" class="stam" id="s<% n %>_1"></input>
-		<input type="checkbox" class="stam" id="s<% n %>_2"></input>
-		<input type="checkbox" class="stam" id="s<% n %>_3"></input> <% n %><br />
-<% END %>
-	</div>
-	<div id="rstam">
-<% FOR n IN [8 10 12 14 16 18] %>
-		<input type="checkbox" class="stam" id="s<% 6 + loop.count %>_1"></input>
-		<input type="checkbox" class="stam" id="s<% 6 + loop.count %>_2"></input>
-		<input type="checkbox" class="stam" id="s<% 6 + loop.count %>_3"></input> <% n %><br />
-<% END %>
-	</div>
+<div id="add_skills" title="Add skills">
+	<form ng-submit="add_skill()">
+		<label for="skill_ability">Ability:</label>
+		<select ng-model="skill_ability" ng-options="item.name for item in select_abilities"></select>
+		<br />
+		<label for="skill_name">Name:</label>
+		<input id="skill_name" type="text" ng-model="skill_name" />
+		<label for="skill_rank">Rank:</label>
+		<input id="skill_rank" type="number" ng-model="skill_rank" />
+		<label for="skill_advancing">Advancing:</label>
+		<input id="skill_advancing" type="number" ng-model="skill_advancing" />
+		<input type="submit" value="add" />
+	</form>
 </div>
 
-<div id="odds" class="ui-widget-content drag">
-	<center>Odds</center>
-	<div class="odds">
-		<ul id="odds_list"></ul>
-	</div>
+<div id="save" title="Save/Load character">
+	Name:
+	<input type="text" ng-model="character_name" />
+	<br />
+	<button ng-click="save()">Save</button>
+	<button ng-click="load()">Load</button>
 </div>
 
-</div>
-
-<div id="output" class="ui-widget-content drag">
-	<center>Rolls</center>
-	<div class="output">
-		<ul id="rolls">
-<% FOR n IN [1 .. 15] %>
-			<li>&nbsp;
-<% END %>
+<div id="inventory" title="Inventory">
+	<select ng-model="add_item_type" ng-options="item_type for item_type in item_types"></select>
+	<button id="open_add_inventory" ng-click="open_add_item()">add</button><br />
+	<br />
+	Search: <input ng-model="inventory_search.name" />
+	<div id="inventory_container">
+		<ul id="inventory_list">
+			<li ng-repeat="item in inventory | filter:inventory_search" ng-dblclick="display_item(item)">{{ item.name }}
 		</ul>
 	</div>
 </div>
 
-<div id="whiteboard" class="ui-widget-content drag">
-	<center>Whiteboard</center>
-	<canvas id="simple_sketch" width="800" height="300"></canvas>
+<div class="display_item" id="display_item" title="Item information">
+	<dl>
+		<dt>Name:       <dd><input ng-model="item.name" /></dd>
+		<dt>Count:      <dd><input type="number" ng-model="item.count" /></dd>
+	</dl>
+	<button ng-show="show_add_item" ng-click="add_item(item)">add</button>
+	<button ng-hide="show_add_item" ng-click="delete_item(item)">delete</button>
+</div>
+<div class="display_item" id="display_weapon" title="Weapon information">
+	<dl>
+		<dt>Name:       <dd><input ng-model="weapon.name" /></dd>
+		<dt>Two handed: <dd><input ng-model="weapon.two_handed" /></dd>
+		<dt>Off handed: <dd><input ng-model="weapon.off_handed" /></dd>
+		<dt>Power:      <dd><input ng-model="weapon.power" /></dd>
+		<dt>Resilience: <dd><input ng-model="weapon.resilience" /></dd>
+		<dt>Initiative: <dd><input ng-model="weapon.init" /></dd>
+		<dt>Damage:     <dd><select ng-model="weapon.damage" ng-options="damage for damage in damage_types"></select></dd>
+		<dt>Equip:      <dd><input type="checkbox" ng-model="weapon.equip" /></dd>
+	</dl>
+	<button ng-show="show_add_item" ng-click="add_item(weapon)">add</button>
+	<button ng-hide="show_add_item" ng-click="delete_item(weapon)">delete</button>
+</div>
+<div class="display_item" id="display_armor" title="Armor information">
+	<dl>
+		<dt>Name:       <dd><input ng-model="armor.name" /></dd>
+		<dt>Rating:     <dd><input ng-model="armor.rating" /></dd>
+		<dt>Power:      <dd><input ng-model="armor.power" /></dd>
+		<dt>Resilience: <dd><input ng-model="armor.resilience" /></dd>
+		<dt>Finesse:    <dd><input ng-model="armor.finesse" /></dd>
+		<dt>Initiative: <dd><input ng-model="armor.init" /></dd>
+		<dt>Equip:      <dd><input type="checkbox" ng-model="armor.equip" /></dd>
+	</dl>
+	<button ng-show="show_add_item" ng-click="add_item(armor)">add</button>
+	<button ng-hide="show_add_item" ng-click="delete_item(armor)">delete</button>
+</div>
+
+<div class="bottom">
+	<div id="config" class="menu">
+		<div ng-click="toggle('pools')">Pools</div>
+		<div ng-click="toggle('rolls')">Rolls</div>
+		<div ng-click="toggle('stamina')">Stamina</div>
+		<div ng-click="toggle('stats')">Stats</div>
+		<div ng-click="toggle('skills')">Skills</div>
+		<div ng-click="toggle('inventory')">Inventory</div>
+		<div ng-click="toggle('save')">Save/load character</div>
+	</div>
+	<div class="header" ng-click="toggle_menu()">
+		Config
+	</div>
 </div>
