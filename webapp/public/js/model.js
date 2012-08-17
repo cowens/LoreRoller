@@ -734,6 +734,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 			console.log(e);
 		}
 
-	}, 1000);
+	}, 0);
 }
 
