@@ -413,11 +413,14 @@ function ModelCtrl($scope, $timeout, $filter) {
 		var rolled_successes = 0;
 		var set;
 
+		var skills = [];
 		for (var i = 0; i < $scope.skills.length; i++) {
 			var skill = $scope.skills[i];
 			if (!skill.use) {
 				continue;
 			}
+
+			skills.push(skill.name + " " + skill.rank);
 
 			if (set == undefined) {
 				set = skill.rank;
@@ -454,12 +457,13 @@ function ModelCtrl($scope, $timeout, $filter) {
 		var total_successes = rolled_successes + set;
 		var roll = date + " <b>" + user + "</b> ";
 	       	if (rolled_successes == 0) {
-			roll += "crit failed ";
+			roll += "crit failed";
 		} else if (rolled_successes == dice && dice > 5) {
-			roll += "got a crit ";
+			roll += "got a crit";
 		} else {
-			roll += "got <b>" + total_successes + "</b> successes ";
+			roll += "got <b>" + total_successes + "</b> successes";
 		}
+		roll += " ";
 		if (set > 0) {
 			roll += "(" + set + " set + " + rolled_successes + " rolled) ";
 		}
@@ -477,7 +481,19 @@ function ModelCtrl($scope, $timeout, $filter) {
 			data = $scope.rolls;
 		}
 
-		data.unshift(roll);
+		var o = {
+			html: roll,
+			prof: $scope.proficiency,
+			set: set,
+			skills: skills,
+			dice: dice,
+			rolled_successes: rolled_successes,
+			rolls: roll_text,
+			pool: $scope.current_pool,
+			successes: rolled_successes + set
+		};
+
+		data.unshift(o);
 		while (data.length > 15) {
 			data.pop();
 		}
@@ -490,6 +506,11 @@ function ModelCtrl($scope, $timeout, $filter) {
 			console.log(e);
 		}
 	};
+
+	$scope.show_roll_details = function(i) {
+		$scope.roll_details = $scope.rolls[i];
+		$("#roll_details").dialog("open");
+	}
 
 	//jQuery stuff needs to run after the DOM has been manipulated
 	$timeout(function() {
@@ -619,6 +640,10 @@ function ModelCtrl($scope, $timeout, $filter) {
 			close: function(e, ui) {
 					$scope.dialog.rolls = false;
 			},
+		});
+		$( "#roll_details" ).dialog({
+			autoOpen: false,
+			modal: false,
 		});
 		$( "#skills" ).dialog({
 			autoOpen: true,

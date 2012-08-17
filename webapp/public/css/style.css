@@ -27,6 +27,19 @@ li {
 	width: 7em;
 }
 
+#roll_details dt {
+	float: left;
+	clear: left;
+	width: 10em;
+}
+#roll_details dd {
+	float: left;
+}
+#roll_details dd.list {
+	float: none;
+	clear: left;
+}
+
 
 .stamina_left {
 	display: inline-block;

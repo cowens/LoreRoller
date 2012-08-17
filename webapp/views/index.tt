@@ -76,9 +76,31 @@
 
 <div id="rolls" title="Rolls">
 	<ul>
-		<li ng-repeat="roll in rolls" ng-bind-html="roll">
+		<li ng-repeat="roll in rolls" ng-click="show_roll_details($index)" ng-bind-html="roll.html">
 	</ul>
 </div>
+
+<div id="roll_details" title="Roll details">
+	<dl>
+		<dt>Pool:
+		<dd>{{ roll_details.pool }}
+		<dt>Number of dice:
+		<dd>{{ roll_details.dice }}
+		<dt>Proficiency:
+		<dd>{{ roll_details.prof }}
+		<dt>Rolled successes:
+		<dd>{{ roll_details.rolled_successes }}
+		<dt ng-show="roll_details.skills.length > 0">Set:
+		<dd ng-show="roll_details.skills.length > 0">{{ roll_details.set }}
+		<dt ng-show="roll_details.skills.length > 0">Total successes:
+		<dd ng-show="roll_details.skills.length > 0">{{ roll_details.successes }}
+		<dt ng-show="roll_details.skills.length > 0">Skills:
+		<dd class="list" ng-repeat="skill in roll_details.skills">{{ skill }}</dd>
+		<dt>Rolls:
+		<dd>{{ roll_details.rolls }}
+	</dl>
+</div>
+
 
 <div id="skills" title="Skills">
 	<button id="open_add_skills" ng-click="toggle('add_skills')">add skills</button>
