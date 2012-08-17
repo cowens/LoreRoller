@@ -344,14 +344,24 @@ function ModelCtrl($scope, $timeout, $filter) {
 
 	$scope.save = function() {
 		var o = {
-			stamina:    $scope.stamina,
-			abilities:  $scope.abilities,
-			name:       $scope.character_name,
-			faith:      $scope.faith,
-			virtue:     $scope.virtue,
-			inventory:  $scope.inventory,
-			skills:     $scope.skills
+			stamina:   $scope.stamina,
+			abilities: $scope.abilities,
+			name:      $scope.character_name,
+			faith:     $scope.faith,
+			virtue:    $scope.virtue,
+			inventory: $scope.inventory,
+			skills:    $scope.skills,
+			windows:   {}
 		};
+		$(".ui-dialog-content").each(function() {
+			o.windows[this.id] = {
+				pos: $(this).dialog( "option", "position" ),
+				w: $(this).dialog( "option", "width" ),
+				h: $(this).dialog( "option", "height" ),
+				open: $(this).dialog("isOpen")
+			}
+		});
+		
 		var jsondata = angular.toJson(o);
 
 		var id;
@@ -401,6 +411,23 @@ function ModelCtrl($scope, $timeout, $filter) {
 					$scope.inventory = data.inventory;
 					$scope.skills    = data.skills;
 				});
+				for (var id in data.windows) {
+					var win = data.windows[id];
+					var q   = '#' + id;
+					$(q).dialog("destroy");
+					$(q).dialog({
+						autoOpen: win.open,
+						width: win.w,
+						height: win.h,
+						position: win.pos,
+						open: function(e, ui) {
+							$scope.dialog[id] = true;
+						},
+						close: function(e, ui) {
+							$scope.dialog[id] = false;
+						},
+					});
+				}
 			}
 		});
 	};
@@ -622,7 +649,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$( "#pools" ).dialog({
 			autoOpen: true,
 			width: "35em",
-			modal: false,
 			position: [ 0, 0 ],
 			open: function(e, ui) {
 				$scope.dialog.pools = true;
@@ -633,7 +659,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#stats" ).dialog({
 			autoOpen: false,
-			modal: false,
 			position: [ 312, 250 ],
 			open: function(e, ui) {
 				$scope.dialog.stats = true;
@@ -644,7 +669,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#stamina" ).dialog({
 			autoOpen: true,
-			modal: false,
 			position: [ 0 , 250 ],
 			open: function(e, ui) {
 				$scope.dialog.stamina = true;
@@ -655,7 +679,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#rolls" ).dialog({
 			autoOpen: true,
-			modal: false,
 			width: "35em",
 			position: [ 630 , 0 ],
 			open: function(e, ui) {
@@ -667,11 +690,9 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#roll_details" ).dialog({
 			autoOpen: false,
-			modal: false,
 		});
 		$( "#skills" ).dialog({
 			autoOpen: true,
-			modal: false,
 			position: [ 312, 250 ],
 			height: 360,
 			width: 410,
@@ -684,7 +705,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#add_skills" ).dialog({
 			autoOpen: false,
-			modal: false,
 			open: function(e, ui) {
 				$scope.dialog.add_skills = true;
 			},
@@ -694,7 +714,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#save" ).dialog({
 			autoOpen: false,
-			modal: false,
 			open: function(e, ui) {
 				$scope.dialog.save = true;
 			},
@@ -704,7 +723,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#inventory" ).dialog({
 			autoOpen: true,
-			modal: false,
 			open: function(e, ui) {
 				$scope.dialog.inventory = true;
 			},
@@ -714,7 +732,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#add_items" ).dialog({
 			autoOpen: false,
-			modal: false,
 			open: function(e, ui) {
 				$scope.dialog.add_items = true;
 			},
@@ -724,7 +741,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#display_armor" ).dialog({
 			autoOpen: false,
-			modal: false,
 			width: "20em",
 			open: function(e, ui) {
 				$scope.dialog.display_armor = true;
@@ -735,7 +751,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#display_weapon" ).dialog({
 			autoOpen: false,
-			modal: false,
 			width: "20em",
 			open: function(e, ui) {
 				$scope.dialog.display_weapon = true;
@@ -746,7 +761,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#display_item" ).dialog({
 			autoOpen: false,
-			modal: false,
 			width: "20em",
 			open: function(e, ui) {
 				$scope.dialog.display_item = true;
@@ -757,7 +771,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 		$( "#odds" ).dialog({
 			autoOpen: false,
-			modal: false,
 			open: function(e, ui) {
 				$scope.dialog.odds = true;
 			},
