@@ -1,5 +1,12 @@
 var LoreRoller = angular.module('LoreRoller', ['ngSanitize']);
 
+function binom(n, k) {
+	var coeff = 1;
+	for (var i = n-k+1; i <= n; i++) coeff *= i;
+	for (var i = 1;     i <= k; i++) coeff /= i;
+	return coeff;
+}
+
 function ModelCtrl($scope, $timeout, $filter) {
 
 	$scope.inventory_search = {};
@@ -512,6 +519,29 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#roll_details").dialog("open");
 	}
 
+	$scope.odds = function() {
+		for (var i = 0; i < $scope.pools.length; i++) {
+			for (var j = 0; j < $scope.pools[i].length; j++) {
+				if ($scope.pools[i][j].name == $scope.current_pool) {
+					pool = $scope.pools[i][j].value();
+					break;
+				}
+			}
+		}
+		var dice = pool * $scope.multiplier;
+		var prof = $scope.proficiency;
+		var total = 0;
+		var chances = [];
+		$scope.average = ((dice*prof)/6).toFixed(1);
+		for (var k = dice; k >= 1; k--) {
+			var chance = binom(dice, k) * Math.pow((prof/6), k) * Math.pow(((6 - prof) / 6), (dice - k));
+
+			total += chance;
+			chances.push(k + ": " + (total*100).toFixed(2) + "%");
+		}
+		return chances;
+	};
+
 	//jQuery stuff needs to run after the DOM has been manipulated
 	$timeout(function() {
 		//make the stamina checkboxes not allow invalid configurations
@@ -606,12 +636,10 @@ function ModelCtrl($scope, $timeout, $filter) {
 			modal: false,
 			position: [ 312, 250 ],
 			open: function(e, ui) {
-				$scope.$apply(function() {
-					$scope.dialog.stats = true;
-				});
+				$scope.dialog.stats = true;
 			},
 			close: function(e, ui) {
-					$scope.dialog.stats = false;
+				$scope.dialog.stats = false;
 			},
 		});
 		$( "#stamina" ).dialog({
@@ -619,12 +647,10 @@ function ModelCtrl($scope, $timeout, $filter) {
 			modal: false,
 			position: [ 0 , 250 ],
 			open: function(e, ui) {
-				$scope.$apply(function() {
-					$scope.dialog.stamina = true;
-				});
+				$scope.dialog.stamina = true;
 			},
 			close: function(e, ui) {
-					$scope.dialog.stamina = false;
+				$scope.dialog.stamina = false;
 			},
 		});
 		$( "#rolls" ).dialog({
@@ -633,12 +659,10 @@ function ModelCtrl($scope, $timeout, $filter) {
 			width: "35em",
 			position: [ 630 , 0 ],
 			open: function(e, ui) {
-				$scope.$apply(function() {
-					$scope.dialog.rolls = true;
-				});
+				$scope.dialog.rolls = true;
 			},
 			close: function(e, ui) {
-					$scope.dialog.rolls = false;
+				$scope.dialog.rolls = false;
 			},
 		});
 		$( "#roll_details" ).dialog({
@@ -652,36 +676,30 @@ function ModelCtrl($scope, $timeout, $filter) {
 			height: 360,
 			width: 410,
 			open: function(e, ui) {
-				$scope.$apply(function() {
-					$scope.dialog.skills = true;
-				});
+				$scope.dialog.skills = true;
 			},
 			close: function(e, ui) {
-					$scope.dialog.skills = false;
+				$scope.dialog.skills = false;
 			},
 		});
 		$( "#add_skills" ).dialog({
 			autoOpen: false,
 			modal: false,
 			open: function(e, ui) {
-				$scope.$apply(function() {
-					$scope.dialog.add_skills = true;
-				});
+				$scope.dialog.add_skills = true;
 			},
 			close: function(e, ui) {
-					$scope.dialog.add_skills = false;
+				$scope.dialog.add_skills = false;
 			},
 		});
 		$( "#save" ).dialog({
 			autoOpen: false,
 			modal: false,
 			open: function(e, ui) {
-				$scope.$apply(function() {
-					$scope.dialog.save = true;
-				});
+				$scope.dialog.save = true;
 			},
 			close: function(e, ui) {
-					$scope.dialog.save = false;
+				$scope.dialog.save = false;
 			},
 		});
 		$( "#inventory" ).dialog({
@@ -735,6 +753,16 @@ function ModelCtrl($scope, $timeout, $filter) {
 			},
 			close: function(e, ui) {
 				$scope.dialog.display_item = false;
+			},
+		});
+		$( "#odds" ).dialog({
+			autoOpen: false,
+			modal: false,
+			open: function(e, ui) {
+				$scope.dialog.odds = true;
+			},
+			close: function(e, ui) {
+				$scope.dialog.odds = false;
 			},
 		});
 

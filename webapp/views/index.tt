@@ -142,6 +142,13 @@
 	</form>
 </div>
 
+<div id="odds" title="Odds">
+	Average: {{ average }}<br />
+	<ul>
+		<li ng-repeat="chance in odds()">{{chance}}
+	</ul>
+</div>
+
 <div id="save" title="Save/Load character">
 	Name:
 	<input type="text" ng-model="character_name" />
@@ -206,6 +213,7 @@
 		<div ng-click="toggle('stats')">Stats</div>
 		<div ng-click="toggle('skills')">Skills</div>
 		<div ng-click="toggle('inventory')">Inventory</div>
+		<div ng-click="toggle('odds')">Odds</div>
 		<div ng-click="toggle('save')">Save/load character</div>
 	</div>
 	<div class="header" ng-click="toggle_menu()">

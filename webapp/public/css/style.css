@@ -106,6 +106,10 @@ li {
 	display: block;
 }
 
+#odds ul {
+	overflow: auto;
+}
+
 .bottom {
 	position: fixed;
 	bottom: 0;
