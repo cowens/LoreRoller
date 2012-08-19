@@ -610,6 +610,36 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#prof").buttonset();
 		$("#roll_button").button();
 
+		$("input[name=mult]").change(function(){
+			var prof = this.id == "1x" ? "3" : this.id == "2x" ? "2" : "1";
+			$scope.$apply(function(){
+				$scope.proficiency = prof;
+			});
+			$("#prof").buttonset("refresh");
+		});
+		var lock_pool_options = function() {
+			$scope.$apply(function(){
+				$scope.proficiency = 3;
+				$scope.multiplier = 1;
+			});
+			$("#prof").buttonset("refresh").buttonset("disable");
+			$("#mult").buttonset("refresh").buttonset("disable");
+		};
+		$("#Comprehension").change(lock_pool_options);
+		$("#Willpower").change(lock_pool_options);
+		$("#Custom").change(lock_pool_options);
+
+		var unlock_pool_options = function() {
+			$("#prof").buttonset("enable");
+			$("#mult").buttonset("enable");
+		};
+		$("#Power").change(unlock_pool_options);
+		$("#Resilience").change(unlock_pool_options);
+		$("#Finesse").change(unlock_pool_options);
+		$("#Presence").change(unlock_pool_options);
+		$("#Deduction").change(unlock_pool_options);
+		$("#Attunement").change(unlock_pool_options);
+
 		$('#virtue').editable(function(value, settings) {
 			var num = value.match(/[1-9][0-9]*/)[0];
 			$scope.$apply(function() {
