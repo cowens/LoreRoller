@@ -358,7 +358,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 				pos: $(this).dialog( "option", "position" ),
 				w: $(this).dialog( "option", "width" ),
 				h: $(this).dialog( "option", "height" ),
-				z: $(this).dialog( "option", "zindex" ),
 				open: $(this).dialog("isOpen")
 			}
 		});
@@ -421,7 +420,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 						width: win.w,
 						height: win.h,
 						position: win.pos,
-						zindex: win.z,
 						open: function(e, ui) {
 							$scope.dialog[id] = true;
 						},
