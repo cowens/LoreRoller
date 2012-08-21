@@ -1,58 +1,90 @@
 <div id="stats" title="Stats">
 	<ul>
-		<li>Abilities
-			<div ng-repeat="ability_group in abilities">
-				<ul>
-					<li ng-repeat="ability in ability_group.abilities">{{ability.name}}: <input type="number" ng-model="ability.value" />
-				</ul>
-			</div>
+		<li id="stats_abils">Abilities
+			<dl>
+				<dt>Might<dd><input type="number" ng-model="abilities['Might']" />
+				<dt>Agility<dd><input type="number" ng-model="abilities['Agility']" />
+				<dt>Vigor<dd><input type="number" ng-model="abilities['Vigor']" />
+				<dt>Charisma<dd><input type="number" ng-model="abilities['Charisma']" />
+				<dt>Intelligence<dd><input type="number" ng-model="abilities['Intelligence']" />
+				<dt>Wisdom<dd><input type="number" ng-model="abilities['Wisdom']" />
+			</dl>
 		</li>
-		<li>Pools
-			<div ng-repeat="pool_group in pools">
-				<ul>
-					<li ng-repeat="pool in pool_group">{{pool.name}}: {{pool.value()}}
-				</ul>
-			</div>
+		<li id="stats_pools">Pools
+			<dl>
+				<dt>Power        <dd>{{ pools.Power() }}
+				<dt>Resilience   <dd>{{ pools.Resilience() }}
+				<dt>Finesse      <dd>{{ pools.Finesse() }}
+				<dt>Presence     <dd>{{ pools.Presence() }}
+				<dt>Deduction    <dd>{{ pools.Deduction() }}
+				<dt>Attunement   <dd>{{ pools.Attunement() }}
+				<dt>Comprehension<dd>{{ pools.Comprehension() }}
+				<dt>Willpower    <dd>{{ pools.Willpower() }}
+				<dt>Custom       <dd>{{ pools.Custom() }}
+			</dl>
 		</li>
-		<li>focus: {{ pools[2][1].value() }}
+		<li>focus: {{ pools.Willpower() }}
 		<li>faith: <span id="faith">{{ faith }}</span>
 		<li>virtue: <span id="virtue">{{ virtue }}</span>
 	</ul>
 </div>
 
+<% MACRO radio(model,value) BLOCK %>
+<input type="radio" name="<%model%>" id="<%value%>" value="<%value%>" ng-model="<%model%>" />
+<label for="<%value%>"><%value%></label>
+<% END %>
 <div id="pools" title="Pools">
-		<div class="pool_group" ng-repeat="pool_group in pools">
-			<div class="pool" ng-repeat="pool in pool_group">
-				<input ng-model="$parent.$parent.current_pool" type="radio" name="pools" id="{{pool.name}}" value="{{pool.name}}" />
-				<label class="{{pool.class}}" for="{{pool.name}}">{{pool.name}}</label>
-			</div>
+	<div id="skill_pools">
+		<div class="pool_group">
+			<% radio("current_pool", "Power") %>
+			<% radio("current_pool", "Resilience") %>
+			<% radio("current_pool", "Finesse") %>
 		</div>
-		<div id="mult">
-			<span class="pool_modifier">Multiplier</span>
-			<input name="mult" type="radio" ng-model="multiplier" id="1x" value="1" />
-			<label for="1x">1x</label>
-			<input name="mult" type="radio" ng-model="multiplier" id="2x" value="2" />
-			<label for="2x">2x</label>
-			<input name="mult" type="radio" ng-model="multiplier" id="3x" value="3" />
-			<label for="3x">3x</label>
+		<div class="pool_group">
+			<% radio("current_pool", "Presence") %>
+			<% radio("current_pool", "Deduction") %>
+			<% radio("current_pool", "Attunement") %>
 		</div>
-		<div id="prof">
-			<span class="pool_modifier">Proficiency</span>
-			<input name="prof" type="radio" ng-model="proficiency" id="prof1" value="1" />
-			<label for="prof1">1</label>
-			<input name="prof" type="radio" ng-model="proficiency" id="prof2" value="2" />
-			<label for="prof2">2</label>
-			<input name="prof" type="radio" ng-model="proficiency" id="prof3" value="3" />
-			<label for="prof3">3</label>
-			<input name="prof" type="radio" ng-model="proficiency" id="prof4" value="4" />
-			<label for="prof4">4</label>
-			<input name="prof" type="radio" ng-model="proficiency" id="prof5" value="5" />
-			<label for="prof5">5</label>
-			<input name="prof" type="radio" ng-model="proficiency" id="prof6" value="6" />
-			<label for="prof6">6</label>
+		<div class="pool_group">
+			<% radio("current_pool", "Comprehension") %>
+			<% radio("current_pool", "Willpower") %>
+			<% radio("current_pool", "Custom") %>
 		</div>
-		<button id="roll_button" ng-click="roll()">Roll</button>
-
+	</div>
+	<div id="combat_pools">
+		<div>
+			<span class="pool_modifier">Attack</span>
+			<% radio("current_pool", "Swat") %>
+			<% radio("current_pool", "Tag") %>
+			<% radio("current_pool", "Cleave") %>
+			<% radio("current_pool", "Devastate") %>
+			<% radio("current_pool", "Slow Exhale") %>
+		</div>
+		<div>
+			<span class="pool_modifier">Counter</span>
+			<% radio("current_pool", "Flinch") %>
+			<% radio("current_pool", "Dodge") %>
+			<% radio("current_pool", "Counter") %>
+			<% radio("current_pool", "Block") %>
+			<% radio("current_pool", "Brace") %>
+		</div>
+	</div>
+	<div id="mult">
+		<span class="pool_modifier">Multiplier</span>
+		<% radio("multiplier", "1x") %>
+		<% radio("multiplier", "2x") %>
+		<% radio("multiplier", "3x") %>
+	</div>
+	<div id="prof">
+		<span class="pool_modifier">Proficiency</span>
+		<% radio("proficiency", 1) %>
+		<% radio("proficiency", 2) %>
+		<% radio("proficiency", 3) %>
+		<% radio("proficiency", 4) %>
+		<% radio("proficiency", 5) %>
+		<% radio("proficiency", 6) %>
+	</div>
+	<button id="roll_button" ng-click="roll()">Roll</button>
 </div>
 
 <div id="stamina" title="Stamina">

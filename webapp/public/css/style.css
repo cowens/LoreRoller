@@ -6,8 +6,19 @@ li {
 	list-style: none;
 }
 
-#stats {
+#stats li { clear: both }
+#stats dt {
+	width: 5em;
+	float: left;
+	clear: left;
 }
+#stats_pools dt {
+	width: 7em;
+}
+#stats dd {
+	float: left;
+}
+
 #stats input[type=number] {
 	width: 3.5em;
 }
@@ -58,20 +69,20 @@ li {
 	width: 12em;
 }
 
-.pool_group {
-}
-
-.pool {
-	display: inline-block;
-}
-
-.pool .ui-button-text {
+.pool_group .ui-button-text {
 	width: 10em;
 	padding-left: .4em; 
 	padding-right: .4em; 
 	padding-top: 0em; 
 	padding-bottom: 0em; 
 
+}
+
+#combat_pools .ui-button-text {
+	padding-left: .4em; 
+	padding-right: .4em; 
+	padding-top: 0em; 
+	padding-bottom: 0em; 
 }
 
 .pool_modifier {

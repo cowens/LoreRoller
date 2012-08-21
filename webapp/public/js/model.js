@@ -41,92 +41,36 @@ function ModelCtrl($scope, $timeout, $filter) {
 	];
 	$scope.faith = 1;
 	$scope.virtue = 3;
-	$scope.dialog = {
-		rolls: true,
-		pools: true,
-		stats: false,
-		stamina: true,
-		skills: true,
-		save: false,
-		inventory: true,
-	};
+	$scope.dialog = {};
 
 	$scope.select_abilities = [
-		{ name: "Might" },
-		{ name: "Agility" },
-		{ name: "Vigor" },
-		{ name: "Charisma" },
-		{ name: "Intelligence" },
-		{ name: "Wisdom" },
-		{ name: "Combat" },
-		{ name: "Patterns" },
+		"Might",
+		"Agility",
+		"Vigor",
+		"Charisma",
+		"Intelligence",
+		"Wisdom",
+		"Combat",
+		"Patterns",
 	];
 
 	$scope.skill_ability = $scope.select_abilities[0];
 
 	$scope.show_unknown_skills = true;
 	
-	$scope.abilities = [
-		{
-			name: "Physical",
-			abilities: [
-				{ name: "Might", value: 5 }, 
-				{ name: "Agility", value: 5 }, 
-				{ name: "Vigor", value: 5 }, 
-			],
-		},
-		{
-			name: "Mental",
-			abilities: [
-				{ name: "Charisma", value: 5 }, 
-				{ name: "Intellignce", value: 5 }, 
-				{ name: "Wisdom", value: 5 }, 
-			],
-		},
-	];
+	$scope.abilities = {
+		Might:         5,
+		Agility:       5,
+		Vigor:         5,
+		Charisma:      5,
+		Intelligence:  5,
+		Wisdom:        5
+	};
 
 	$scope.custom_pool  = 0;
 	$scope.current_pool = "Power";
 	$scope.proficiency  = 3;
-	$scope.multiplier   = 1;
-
-	$scope.pools = [
-		[
-			{ name: "Power",      value: function() { return Math.ceil(($scope.abilities[0]["abilities"][0].value + $scope.abilities[0]["abilities"][1].value) / 2) } },
-			{ name: "Resilience", value: function() { return Math.ceil(($scope.abilities[0]["abilities"][0].value + $scope.abilities[0]["abilities"][2].value) / 2) } },
-			{ name: "Finesse",    value: function() { return Math.ceil(($scope.abilities[1]["abilities"][2].value + $scope.abilities[0]["abilities"][1].value) / 2) } },
-		],
-		[
-			{ name: "Presence",   value: function() { return Math.ceil(($scope.abilities[1]["abilities"][0].value + $scope.abilities[1]["abilities"][2].value) / 2) } },
-			{ name: "Deduction",  value: function() { return Math.ceil(($scope.abilities[1]["abilities"][0].value + $scope.abilities[1]["abilities"][1].value) / 2) } },
-			{ name: "Attunement", value: function() { return Math.ceil(($scope.abilities[1]["abilities"][1].value + $scope.abilities[1]["abilities"][2].value) / 2) } },
-		],
-		[
-			{ name: "Comprehension", value: function() { return Math.ceil(($scope.abilities[0]["abilities"][0].value + $scope.abilities[1]["abilities"][1].value) / 2) } },
-			{
-				name: "Willpower",
-				value: function() {
-					var stam = 0;
-					for (var i = 11; i >= 0; i--) {
-						if ($scope.stamina[i][2] == true) {
-							stam = i + 1;
-							break;
-						}
-					}
-					var base = Math.ceil(($scope.abilities[1]["abilities"][0].value + $scope.abilities[0]["abilities"][2].value) / 2);
-					var pool = base - stam;
-					//if stam > 6 then it counts twice
-					if (stam > 6) {
-						pool -= stam - 6;
-					}
-
-					return pool;
-				}
-			},
-			{ name: "Custom", class: "edit", value: function() { return $scope.custom_pool } },
-		],
-	];
-
+	$scope.multiplier   = "1x";
 	$scope.stamina = [
 	];
 
@@ -136,6 +80,55 @@ function ModelCtrl($scope, $timeout, $filter) {
 			$scope.stamina[i][j] = false;
 		}
 	}
+
+	var calc_average = function(a,b) { return function() { return Math.ceil(($scope.abilities[a]+$scope.abilities[b])/2) } };
+	var calc_willpower = function() {
+		var stam = 0;
+		for (var i = 11; i >= 0; i--) {
+			if ($scope.stamina[i][2] == true) {
+				stam = i + 1;
+				break;
+			}
+		}
+		var base = calc_average("Vigor", "Charisma")();
+		var pool = base - stam;
+		//if stam > 6 then it counts twice
+		if (stam > 6) {
+			pool -= stam - 6;
+		}
+
+		return pool;
+	};
+	$scope.pools = {
+		Power:          calc_average("Might", "Agility"),
+		Resilience:     calc_average("Might", "Vigor"),
+		Finesse:        calc_average("Agility", "Wisdom"),
+		Presence:       calc_average("Charisma", "Wisdom"),
+		Deduction:      calc_average("Intelligence", "Wisdom"),
+		Attunement:     calc_average("Charisma", "Intelligence"),
+		Comprehension:  calc_average("Might", "Intelligence"),
+		Willpower:      calc_willpower,
+		Custom:         function() { return $scope.custom_pool },
+	};
+	$scope.battle = { weapons: [], inititive: 0, focus: $scope.pools.Willpower() };
+	$scope.accuracy = function() {
+		var accuracy = 0;
+		for (weapon in $scope.weapons) {
+			accuracy += $scope.battle.weapons.skill + $scope.battle.weapons.modifier;
+		}
+		accuracy += $scope.battle.inititive;
+		return accuracy;
+	}
+	$scope.pools.Swat           = function() { return $scope.pools.Power() };
+	$scope.pools.Tag            = function() { $scope.battle.focus--; return 3 + $scope.accuracy() };
+	$scope.pools.Cleave         = function() { $scope.battle.focus -= 2; return $scope.pools.Power() + $scope.accuracy() };
+	$scope.pools.Devastate      = function() { $scope.battle.focus -= 3; return 2 * $scope.pools.Power() + $scope.accuracy() };
+	$scope.pools["Slow Exhale"] = function() { $scope.battle.focus -= 4; return $scope.pools.Power() + 2 * $scope.accuracy() };
+	$scope.pools.Flinch         = function() { return $scope.pools.Resilience() };
+	$scope.pools.Dodge          = function() { $scope.battle.focus -= 1; var pool = 3 + $scope.accuracy(); $scope.battle.inititive--; return pool };
+	$scope.pools.Counterattack  = function() { return $scope.accuracy() };
+	$scope.pools.Block          = function() { return $scope.pools.Resilience() + $scope.accuracy() };
+	$scope.pools.Brace          = function() { return 2 * $scope.pools.Resilience() + $scope.accuracy() };
 
 	$scope.weapon    = {};
 	$scope.item      = {};
@@ -482,16 +475,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 	};
 
 	$scope.roll = function() {
-		var pool;
-		for (var i = 0; i < $scope.pools.length; i++) {
-			for (var j = 0; j < $scope.pools[i].length; j++) {
-				if ($scope.pools[i][j].name == $scope.current_pool) {
-					pool = $scope.pools[i][j].value();
-					break;
-				}
-			}
-		}
-		var dice = pool * $scope.multiplier;
+		var pool = $scope.pools[$scope.current_pool]();
+		var dice = pool * parseInt($scope.multiplier);
 		var rolls = [];
 		var rolled_successes = 0;
 		var set;
@@ -591,15 +576,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 	}
 
 	$scope.odds = function() {
-		for (var i = 0; i < $scope.pools.length; i++) {
-			for (var j = 0; j < $scope.pools[i].length; j++) {
-				if ($scope.pools[i][j].name == $scope.current_pool) {
-					pool = $scope.pools[i][j].value();
-					break;
-				}
-			}
-		}
-		var dice = pool * $scope.multiplier;
+		var pool = $scope.pools[$scope.current_pool]();
+		var dice = pool * parseInt($scope.multiplier);
 		var prof = $scope.proficiency;
 		var total = 0;
 		var chances = [];
@@ -654,17 +632,25 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#prof").buttonset();
 		$("#roll_button").button();
 
-		$("input[name=mult]").change(function(){
+		$("input[name=multiplier]").change(function(){
 			var prof = this.id == "1x" ? "3" : this.id == "2x" ? "2" : "1";
 			$scope.$apply(function(){
 				$scope.proficiency = prof;
 			});
 			$("#prof").buttonset("refresh");
 		});
+		var lock_mult = function(prof) {
+			$scope.$apply(function(){
+				$scope.multiplier = "1x";
+				$scope.proficiency = prof;
+			});
+			$("#mult").buttonset("refresh").buttonset("disable");
+			$("#prof").buttonset("refresh");
+		};
 		var lock_pool_options = function() {
 			$scope.$apply(function(){
 				$scope.proficiency = 3;
-				$scope.multiplier = 1;
+				$scope.multiplier = "1x";
 			});
 			$("#prof").buttonset("refresh").buttonset("disable");
 			$("#mult").buttonset("refresh").buttonset("disable");
@@ -683,6 +669,16 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#Presence").change(unlock_pool_options);
 		$("#Deduction").change(unlock_pool_options);
 		$("#Attunement").change(unlock_pool_options);
+		$("#Swat").change(function()          { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Tag").change(function()           { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Cleave").change(function()        { this.checked ? lock_mult(2) : unlock_pool_options() });
+		$("#Devastate").change(function()     { this.checked ? lock_mult(1) : unlock_pool_options() });
+		$("#Slow Exhale").change(function()   { this.checked ? lock_mult(1) : unlock_pool_options() });
+		$("#Flinch").change(function()        { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Dodge").change(function()         { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Counterattack").change(function() { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Block").change(function()         { this.checked ? lock_mult(2) : unlock_pool_options() });
+		$("#Brace").change(function()         { this.checked ? lock_mult(1) : unlock_pool_options() });
 
 		$('#virtue').editable(function(value, settings) {
 			var num = value.match(/[1-9][0-9]*/)[0];
@@ -720,143 +716,44 @@ function ModelCtrl($scope, $timeout, $filter) {
 			tooltip: "double click to change",
 			event: "dblclick",
 		});
-		$( "#pools" ).dialog({
-			autoOpen: true,
-			width: "35em",
-			position: [ 0, 0 ],
-			open: function(e, ui) {
-				$scope.dialog.pools = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.pools = false;
-			},
+
+		var dialog = function(name, width) {
+			$( "#" + name ).dialog({
+				autoOpen: false,
+				width: width,
+				open: function() {
+					$scope.dialog[name] = true;
+				},
+				close: function() {
+					$scope.dialog[name] = false;
+				}
+			});
+		};
+
+		dialog("pools",           "35em");
+		dialog("rolls",           "35em");
+		dialog("display_armor",   "20em");
+		dialog("display_weapon",  "20em");
+		dialog("display_item",    "20em");
+		dialog("skills",          "20.5em");
+		dialog("stats");
+		dialog("stamina");
+		dialog("roll_details");
+		dialog("add_skills");
+		dialog("save");
+		dialog("inventory");
+		dialog("add_items");
+		dialog("odds");
+		$("#skills").dialog().bind("dialogresize", function(event, ui) {
+			$('#skills .scrolled_content').height( $("#skills").height() - $("#skills .fixed_header").height() );
 		});
-		$( "#stats" ).dialog({
-			autoOpen: false,
-			position: [ 312, 250 ],
-			open: function(e, ui) {
-				$scope.dialog.stats = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.stats = false;
-			},
-		});
-		$( "#stamina" ).dialog({
-			autoOpen: true,
-			position: [ 0 , 250 ],
-			open: function(e, ui) {
-				$scope.dialog.stamina = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.stamina = false;
-			},
-		});
-		$( "#rolls" ).dialog({
-			autoOpen: true,
-			width: "35em",
-			position: [ 630 , 0 ],
-			open: function(e, ui) {
-				$scope.dialog.rolls = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.rolls = false;
-			},
-		});
-		$( "#roll_details" ).dialog({
-			autoOpen: false,
-		});
-		$( "#skills" ).dialog({
-			autoOpen: true,
-			position: [ 312, 250 ],
-			height: 360,
-			width: 410,
-			open: function(e, ui) {
-				$scope.dialog.skills = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.skills = false;
-			},
-		});
-		$( "#add_skills" ).dialog({
-			autoOpen: false,
-			open: function(e, ui) {
-				$scope.dialog.add_skills = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.add_skills = false;
-			},
-		});
-		$( "#save" ).dialog({
-			autoOpen: false,
-			open: function(e, ui) {
-				$scope.dialog.save = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.save = false;
-			},
-		});
-		$( "#inventory" ).dialog({
-			autoOpen: true,
-			open: function(e, ui) {
-				$scope.dialog.inventory = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.inventory = false;
-			},
-		});
-		$( "#add_items" ).dialog({
-			autoOpen: false,
-			open: function(e, ui) {
-				$scope.dialog.add_items = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.add_items = false;
-			},
-		});
-		$( "#display_armor" ).dialog({
-			autoOpen: false,
-			width: "20em",
-			open: function(e, ui) {
-				$scope.dialog.display_armor = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.display_armor = false;
-			},
-		});
-		$( "#display_weapon" ).dialog({
-			autoOpen: false,
-			width: "20em",
-			open: function(e, ui) {
-				$scope.dialog.display_weapon = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.display_weapon = false;
-			},
-		});
-		$( "#display_item" ).dialog({
-			autoOpen: false,
-			width: "20em",
-			open: function(e, ui) {
-				$scope.dialog.display_item = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.display_item = false;
-			},
-		});
-		$( "#odds" ).dialog({
-			autoOpen: false,
-			open: function(e, ui) {
-				$scope.dialog.odds = true;
-			},
-			close: function(e, ui) {
-				$scope.dialog.odds = false;
-			},
-		});
+		$('#skills .scrolled_content').height(100);
 
 		$(".skill_edit").button();
 		$('#skills_table').tableScroll({height:200});
 		$("#inventory_list").sortable();
 		$("#inventory_list").disableSelection();
+		$("#combat_pools").buttonset();
 
 		if (hangout.length) {
 			gapi.hangout.data.onStateChanged.add(
