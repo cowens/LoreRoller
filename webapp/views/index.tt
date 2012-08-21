@@ -101,45 +101,43 @@
 	</dl>
 </div>
 
-
 <div id="skills" title="Skills">
-	<button id="open_add_skills" ng-click="toggle('add_skills')">add skills</button>
-	<input type="checkbox" ng-model="show_unknown_skills">Show unknown skills</input>
-	<br />
-	Search: <input ng-model="skill_search" />
-	<table id="skills_table">
-		<thead>
-			<tr>
-				<th>Use</th>
-				<th>Skill</th>
-				<th>Rank</th>
-				<th>Advancing</th>
-			</tr>
-		</thead>
-		<tbody id="skills_list">
-			<tr ng-repeat="skill in skills | filter:filter_skills | orderBy:'name'">
-				<td><input type="checkbox" ng-model="skill.use" /></td>
-				<td>{{skill.name}}</td>
-				<td><input type="number" ng-model="skill.rank" /></td>
-				<td><input type="number" ng-model="skill.advancing" /></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-
-<div id="add_skills" title="Add skills">
-	<form ng-submit="add_skill()">
-		<label for="skill_ability">Ability:</label>
-		<select ng-model="skill_ability" ng-options="item.name for item in select_abilities"></select>
+	<div class="fixed_header">
+		<button id="open_add_skills" ng-click="edit_skill({})">add skills</button>
+		<input type="checkbox" ng-model="show_unknown_skills">Show unknown skills</input>
 		<br />
-		<label for="skill_name">Name:</label>
-		<input id="skill_name" type="text" ng-model="skill_name" />
-		<label for="skill_rank">Rank:</label>
-		<input id="skill_rank" type="number" ng-model="skill_rank" />
-		<label for="skill_advancing">Advancing:</label>
-		<input id="skill_advancing" type="number" ng-model="skill_advancing" />
-		<input type="submit" value="add" />
-	</form>
+		Search: <input ng-model="skill_search" />
+		<table>
+			<tr>
+				<th class="name">Skill</th>
+				<th class="rank">Rank</th>
+				<th></th>
+			</tr>
+		</table>
+	</div>
+	<div class="scrolled_content">
+		<table>
+			<tr ng-class="skill.class" ng-repeat="skill in skills | filter:filter_skills | orderBy:[sortable_use, 'name']">
+				<td class="name" ng-click="select_skill(skill)">
+					{{skill.name}}
+				</td>
+				<td class="rank" ng-click="edit_skill(skill)">{{skill.rank}}<span ng-show="skill.rank < skill.advancing">/{{skill.advancing}}</span></td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="add_skills" title="Edit skill">
+	<label for="skill_ability">Ability:</label>
+	<select ng-model="dummy_skill.ability" ng-options="item for item in select_abilities"></select>
+	<br />
+	<label for="skill_name">Name:</label>
+	<input id="skill_name" type="text" ng-model="dummy_skill.name" />
+	<label for="skill_rank">Rank:</label>
+	<input id="skill_rank" type="number" ng-model="dummy_skill.rank" />
+	<label for="skill_advancing">Advancing:</label>
+	<input id="skill_advancing" type="number" ng-model="dummy_skill.advancing" />
+	<button ng-show="show_add_skill" ng-click="add_skill()">add</button>
+	<button ng-hide="show_add_skill" ng-click="delete_skill(dummy_skill)">delete</button>
 </div>
 
 <div id="odds" title="Odds">

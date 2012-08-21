@@ -292,6 +292,13 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#display_" + item.type).dialog("open");
 	}
 
+	$scope.sortable_use = function(skill) {
+		if (skill) {
+			return 0;
+		} else {
+			return 1;
+		}
+	};
 	$scope.filter_skills = function(skill) {
 		var regex = new RegExp($scope.skill_search, "i");
 		var show;
@@ -305,14 +312,58 @@ function ModelCtrl($scope, $timeout, $filter) {
 		return show;
 	}
 
+	$scope.open_add_skills = function() {
+	};
+
 	$scope.add_skill = function() {
 		$scope.skills.push({
-			use: false,
-			ability: $scope.skill_ability.name,
-			name: $scope.skill_name,
-			rank: $scope.skill_rank,
-			advancing: $scope.skill_advancing,
+			use:        false,
+			ability:    $scope.dummy_skill.ability,
+			name:       $scope.dummy_skill.name,
+			rank:       $scope.dummy_skill.rank,
+			advancing:  $scope.dummy_skill.advancing,
 		});
+		$scope.dummy_skill = {
+			use:        false,
+			ability:    $scope.skill_ability.name,
+			name:       "",
+			rank:       0,
+			advancing:  0
+		};
+	};
+
+	$scope.select_skill = function(skill) {
+		var checkbox = $("#" + skill.name);
+		if (skill.use) {
+			skill.use = false;
+			skill.class = "";
+		} else {
+			skill.use = true;
+			skill.class = "selected_skill";
+		}
+       	};
+	$scope.edit_skill = function(skill) {
+		if (skill.name) {
+			$scope.dummy_skill = skill;
+			$scope.show_add_skill = false;
+		} else {
+			$scope.dummy_skill = {
+				use:        false,
+				ability:    $scope.skill_ability.name,
+				name:       "",
+				rank:       0,
+				advancing:  0
+			};
+			$scope.show_add_skill = true;
+		}
+		$("#add_skills").dialog("open");
+	}
+	$scope.delete_skill = function(skill) {
+		var i = $scope.skills.indexOf(skill);
+		if (i >= 0) {
+			$scope.skills.splice(i, 1);
+		}
+		$("#add_skills").dialog("close");
 	};
 
 	$scope.delete_item = function(item) {

@@ -1,3 +1,7 @@
+table {
+	border-collapse:collapse;
+}
+
 li {
 	list-style: none;
 }
@@ -96,14 +100,21 @@ li {
 	white-space: nowrap;
 }
 
-#skills .scrollContent {
-	display: block;
-	height: 200px;
-	overflow: auto;
+.selected_skill {
+	background: lightgrey;
 }
 
-#skills .fixedheader {
-	display: block;
+#skills .name {
+	width: 15em;
+}
+
+#skills .rank {
+	width: 5em;
+}
+
+#skills .scrolled_content {
+	overflow-x: auto;
+	overflow-y: auto;
 }
 
 #odds ul {
