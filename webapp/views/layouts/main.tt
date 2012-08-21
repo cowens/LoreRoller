@@ -8,6 +8,7 @@
 	<head>
 		<script>
 			var platform = "<% platform %>";
+			var hangout = "<% hangout %>";
 		</script>
 		<% js("jquery-1.7.2.min.js") %>
 		<% js("jquery-ui-1.8.22.custom.min.js") %>
@@ -20,8 +21,7 @@
 		<% css("jquery.tablescroll.css") %>
 		<% css("smoothness/jquery-ui-1.8.22.custom.css") %>
 		<% css("style.css") %>
-
-		<script src="//hangoutsapi.talkgadget.google.com/hangouts/_/api/hangout.js?v=1.1"></script>
+		<%- hangout -%>
 	</head>
 	<body ng-controller="ModelCtrl">
 	<% content %>

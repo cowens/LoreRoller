@@ -416,10 +416,9 @@ function ModelCtrl($scope, $timeout, $filter) {
 		var jsondata = angular.toJson(o);
 
 		var id;
-		try {
+		if (hangout.length) {
 			id = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.id;
-		} catch(e) {
-			console.log(e);
+		} else {
 			id = 10041697270;
 		}
 
@@ -428,10 +427,9 @@ function ModelCtrl($scope, $timeout, $filter) {
 			dataType: 'jsonp',
 			data: { id: id, name: $scope.character_name, data: jsondata },
 			success: function() {
-				try {
+				if (hangout.length) {
 					gapi.hangout.layout.displayNotice($scope.character_name + " was saved");
-				} catch(e) {
-					console.log(e);
+				} else {
 					alert($scope.character_name + " was saved");
 				}
 			}
@@ -442,9 +440,9 @@ function ModelCtrl($scope, $timeout, $filter) {
 
 	$scope.load = function() {
 		var id;
-		try {
+		if (hangout.length) {
 			id = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.id;
-		} catch(e) {
+		} else {
 			id = 10041697270;
 		}
 
@@ -528,20 +526,18 @@ function ModelCtrl($scope, $timeout, $filter) {
 				rolled_successes++;
 			}
 		}
-	
+
 		var date = $filter('date')(new Date, "HH:mm:ss");
 		var user = "X";
-		try {
+		if (hangout.length) {
 			user = gapi.hangout.getParticipantById(
-				gapi.hangout.getParticipantId()
-			).person.displayName;
-		} catch(e) {
-			console.log(e);
+					gapi.hangout.getParticipantId()
+					).person.displayName;
 		}
 		var roll_text = rolls.length < 38 ? rolls.sort().join(", ") : "lots";
 		var total_successes = rolled_successes + set;
 		var roll = date + " <b>" + user + "</b> ";
-	       	if (rolled_successes == 0) {
+		if (rolled_successes == 0) {
 			roll += "crit failed";
 		} else if (rolled_successes == dice && dice > 5) {
 			roll += "got a crit";
@@ -553,16 +549,15 @@ function ModelCtrl($scope, $timeout, $filter) {
 			roll += "(" + set + " set + " + rolled_successes + " rolled) ";
 		}
 		roll += dice + "/" + $scope.proficiency + " (" + roll_text + ")"
-		var data;
-		try {
+			var data;
+		if (hangout.length) {
 			data = gapi.hangout.data.getValue("rolls");
 			if (data == undefined) {
 				data = "[]";
 			}
 
 			data = jQuery.parseJSON(data);
-		} catch(e) {
-			console.log(e);
+		} else {
 			data = $scope.rolls;
 		}
 
@@ -585,10 +580,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 		while (data.length < 15) {
 			data.push("&nbsp;");
 		}
-		try {
+		if (hangout.length) {
 			gapi.hangout.data.setValue("rolls", angular.toJson(data));
-		} catch(e) {
-			console.log(e);
 		}
 	};
 
@@ -865,10 +858,10 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#inventory_list").sortable();
 		$("#inventory_list").disableSelection();
 
-		try {
+		if (hangout.length) {
 			gapi.hangout.data.onStateChanged.add(
-				function (change) {
-					var data = gapi.hangout.data.getValue("rolls")
+					function (change) {
+						var data = gapi.hangout.data.getValue("rolls")
 					if (data == undefined) {
 						data = "[]";
 					}
@@ -877,10 +870,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 					});
 				}
 			);
-		} catch(e) {
-			console.log(e);
 		}
-
 	}, 0);
 }
 
