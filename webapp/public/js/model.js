@@ -305,9 +305,6 @@ function ModelCtrl($scope, $timeout, $filter) {
 		return show;
 	}
 
-	$scope.open_add_skills = function() {
-	};
-
 	$scope.add_skill = function() {
 		$scope.skills.push({
 			use:        false,
@@ -534,7 +531,8 @@ function ModelCtrl($scope, $timeout, $filter) {
 			roll += "(" + set + " set + " + rolled_successes + " rolled) ";
 		}
 		roll += dice + "/" + $scope.proficiency + " (" + roll_text + ")"
-			var data;
+
+		var data;
 		if (hangout.length) {
 			data = gapi.hangout.data.getValue("rolls");
 			if (data == undefined) {
