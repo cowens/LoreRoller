@@ -103,8 +103,30 @@ li {
 }
 
 #roll_button {
-	width: 30em;
+	width: 16em;
 }
+#add_action_button {
+	width: 16em;
+}
+
+#actions dt {
+	width: 7em;
+	float: left;
+	clear: left;
+}
+
+#actions dd {
+	float:left;
+}
+
+#actions dd.list {
+	clear:left;
+}
+
+#action_list {
+	clear: left;
+}
+
 
 #rolls {
 	position: relative;

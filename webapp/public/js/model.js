@@ -7,8 +7,156 @@ function binom(n, k) {
 	return coeff;
 }
 
+function Action($scope, focus_cost) {
+	return {
+		user: "Chas. Owens",
+		focus_cost: focus_cost
+	}
+}
+
+function Roll(args) {
+	var rolls = [];
+	args.user = "Default";
+	if (hangout.length) {
+		args.user = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId()).person.displayName;
+	}
+	args.rolled_successes = 0;
+	for (var i = 0; i < args.dice; i++) {
+		var roll = Math.floor((Math.random()*6)+1);
+		rolls.push(roll);
+		if (roll <= args.proficiency) {
+			args.rolled_successes++;
+		}
+	}
+	args.successes = args.set ? args.rolled_successes + set : args.rolled_successes;
+	var date = new Date();
+	var hours = date.getHours();
+	if (hours < 10) {
+		hours = "0" + hours;
+	}
+	var minutes = date.getMinutes()
+	if (minutes < 10) {
+		minutes = "0" + minutes;
+	}
+	var seconds = date.getSeconds()
+	if (seconds < 10) {
+		seconds = "0" + seconds;
+	}
+	args.message = hours + ":" + minutes + ":" + seconds + " <b>" + args.user + "</b> ";
+	if (args.rolled_successes == 0) {
+		args.message += "crit failed";
+	} else if (args.rolled_successes == args.dice && args.dice > 5) {
+		args.message += "got a crit with " + args.dice + " dice";
+	} else {
+		args.message += "got <b>" + args.successes + "</b> successes";
+	}
+	args.rolls = rolls.length < 35 ? rolls.sort().join(", ") : "lots";
+
+	return args;
+}
+
 function ModelCtrl($scope, $timeout, $filter) {
 
+	$scope.end_turn = function() {
+		if ($scope.combat.focus < 0) {
+		}
+		$scope.combat.focus = $scope.pools.Willpower();
+		if ($scope.combat.initiative_loss > 0) {
+			$scope.combat.initiative -= $scope.combat.initiative_loss;
+			$scope.combat.initiative_loss = 0;
+		}
+		$scope.clear_actions()
+	}
+
+	function date() {
+		return $filter('date')(new Date, "HH:mm:ss");
+	}
+
+	$scope.roll_init = function() {
+		var roll = new Roll({
+			pool: "Initiative",
+			dice: $scope.pools.Finesse(),
+			proficiency: 3
+		});
+
+		$scope.combat.initiative = roll.successes;
+		$scope.register_roll(roll);
+	};
+
+	$scope.equiped_weapons = function(item) {
+		return item.type == "weapon" && item.equip != "unequipped";
+	}
+
+	$scope.equip_weapon_types = [
+		"unequipped",
+		"primary",
+		"two hands",
+		"off hand"
+	];
+	var focus_costs = {
+		Tag:            1,
+		Cleave:         2,
+		Devastate:      3,
+		"Slow Exhale":  4,
+		Dodge:          1,
+		Counter:        1,
+		Block:          2,
+		Brace:          3
+	};
+	var starting_profs = {
+		Swat:           3,
+		Tag:            3,
+		Cleave:         2,
+		Devastate:      1,
+		"Slow Exhale":  1,
+		Flinch:         3,
+		Dodge:          3,
+		Counter:        3,
+		Block:          2,
+		Brace:          1
+	}
+	$scope.focus_modifier = 0;
+	var focus_cost = function() {
+		var focus = 0;
+
+		var focus_cost = focus_costs[$scope.current_pool];	
+		if (focus_cost != undefined) {
+			focus += focus_cost;
+		}
+
+		var starting_prof = starting_profs[$scope.current_pool];
+		if (starting_prof != undefined & $scope.proficiency > starting_prof) {
+			focus += 3*($scope.proficiency - starting_prof);
+		}
+
+		$('.selected_skill').each(function() {
+			focus++;
+		});
+
+		switch ($scope.multiplier) {
+			case "3x":
+				focus += 3;
+				if ($scope.proficiency > 1) {
+					focus += 3*($scope.proficiency - 1);
+				}
+				break;
+			case "2x":
+				focus += 2;
+				if ($scope.proficiency > 2) {
+					focus += 3*($scope.proficiency - 2);
+				}
+				break;
+		}
+
+		focus += $scope.focus_modifier;
+
+		if (focus < 0) {
+			focus = 0;
+		}
+
+		return focus;
+	}
+	$scope.action = new Action($scope, focus_cost);
 	$scope.inventory_search = {};
 	$scope.show_add_item = false;
 	$scope.item_types = [
@@ -110,23 +258,34 @@ function ModelCtrl($scope, $timeout, $filter) {
 		Willpower:      calc_willpower,
 		Custom:         function() { return $scope.custom_pool },
 	};
-	$scope.battle = { weapons: [], inititive: 0, focus: $scope.pools.Willpower() };
+	$scope.combat = { actions: [], initiative: 0, focus: $scope.pools.Willpower() };
 	$scope.accuracy = function() {
 		var accuracy = 0;
-		for (weapon in $scope.weapons) {
-			accuracy += $scope.battle.weapons.skill + $scope.battle.weapons.modifier;
+		for (item in $scope.inventory) {
+			if ((item.type != "weapon" && item.type != "armor") || item.equip != "unequipped") {
+				continue;
+			}
+			var rank = 0;
+			for (skill in skills) {
+				if (skill.ability == "Combat" && skill.name == item.skill) {
+					rank = skill.rank;
+					break;
+				}
+			}
+
+			accuracy += rank + $item.init;
 		}
-		accuracy += $scope.battle.inititive;
+		accuracy += $scope.combat.initiative;
 		return accuracy;
 	}
 	$scope.pools.Swat           = function() { return $scope.pools.Power() };
-	$scope.pools.Tag            = function() { $scope.battle.focus--; return 3 + $scope.accuracy() };
-	$scope.pools.Cleave         = function() { $scope.battle.focus -= 2; return $scope.pools.Power() + $scope.accuracy() };
-	$scope.pools.Devastate      = function() { $scope.battle.focus -= 3; return 2 * $scope.pools.Power() + $scope.accuracy() };
-	$scope.pools["Slow Exhale"] = function() { $scope.battle.focus -= 4; return $scope.pools.Power() + 2 * $scope.accuracy() };
+	$scope.pools.Tag            = function() { return 3 + $scope.accuracy() };
+	$scope.pools.Cleave         = function() { return $scope.pools.Power() + $scope.accuracy() };
+	$scope.pools.Devastate      = function() { return 2 * $scope.pools.Power() + $scope.accuracy() };
+	$scope.pools["Slow Exhale"] = function() { return $scope.pools.Power() + 2 * $scope.accuracy() };
 	$scope.pools.Flinch         = function() { return $scope.pools.Resilience() };
-	$scope.pools.Dodge          = function() { $scope.battle.focus -= 1; var pool = 3 + $scope.accuracy(); $scope.battle.inititive--; return pool };
-	$scope.pools.Counterattack  = function() { return $scope.accuracy() };
+	$scope.pools.Dodge          = function() { return 3 + $scope.accuracy() };
+	$scope.pools.Counter        = function() { return $scope.accuracy() };
 	$scope.pools.Block          = function() { return $scope.pools.Resilience() + $scope.accuracy() };
 	$scope.pools.Brace          = function() { return 2 * $scope.pools.Resilience() + $scope.accuracy() };
 
@@ -471,13 +630,37 @@ function ModelCtrl($scope, $timeout, $filter) {
 		});
 	};
 
+	$scope.add_action = function() {
+		$scope.combat.actions.push({
+			user:        $scope.action.user,
+			focus_cost:  $scope.action.focus_cost(),
+			action:      $scope.current_pool
+		});
+		$scope.combat.focus -= $scope.action.focus_cost();
+	};
+
+	$scope.register_roll = function(roll) {
+		var rolls;
+		if (hangout) {
+			data = gapi.hangout.data.getValue("rolls");
+			rolls = data == undefined ? [] : jQuery.parseJSON(data);
+		} else {
+			rolls = $scope.rolls;
+		}
+		rolls.unshift(roll);
+		while (rolls.length > 15) {
+			rolls.pop();
+		}
+		if (hangout.length) {
+			gapi.hangout.data.setValue("rolls", angular.toJson(rolls));
+		}
+	}
+
 	$scope.roll = function() {
 		var pool = $scope.pools[$scope.current_pool]();
 		var dice = pool * parseInt($scope.multiplier);
-		var rolls = [];
-		var rolled_successes = 0;
-		var set;
 
+		var set;
 		var skills = [];
 		for (var i = 0; i < $scope.skills.length; i++) {
 			var skill = $scope.skills[i];
@@ -501,71 +684,15 @@ function ModelCtrl($scope, $timeout, $filter) {
 		}
 		set *= 2;
 
-		for (var i = 0; i < dice; i++) {
-			var roll = Math.floor((Math.random()*6)+1);
-			rolls.push(roll);
-			if (roll <= $scope.proficiency) {
-				rolled_successes++;
-			}
-		}
+		var roll = new Roll({
+			pool:         $scope.current_pool,
+			dice:         dice,
+			proficiency:  $scope.proficiency,
+			set:          set,
+			skills:       skills
+		});
 
-		var date = $filter('date')(new Date, "HH:mm:ss");
-		var user = "X";
-		if (hangout.length) {
-			user = gapi.hangout.getParticipantById(
-					gapi.hangout.getParticipantId()
-					).person.displayName;
-		}
-		var roll_text = rolls.length < 38 ? rolls.sort().join(", ") : "lots";
-		var total_successes = rolled_successes + set;
-		var roll = date + " <b>" + user + "</b> ";
-		if (rolled_successes == 0) {
-			roll += "crit failed";
-		} else if (rolled_successes == dice && dice > 5) {
-			roll += "got a crit";
-		} else {
-			roll += "got <b>" + total_successes + "</b> successes";
-		}
-		roll += " ";
-		if (set > 0) {
-			roll += "(" + set + " set + " + rolled_successes + " rolled) ";
-		}
-		roll += dice + "/" + $scope.proficiency + " (" + roll_text + ")"
-
-		var data;
-		if (hangout.length) {
-			data = gapi.hangout.data.getValue("rolls");
-			if (data == undefined) {
-				data = "[]";
-			}
-
-			data = jQuery.parseJSON(data);
-		} else {
-			data = $scope.rolls;
-		}
-
-		var o = {
-			html: roll,
-			prof: $scope.proficiency,
-			set: set,
-			skills: skills,
-			dice: dice,
-			rolled_successes: rolled_successes,
-			rolls: roll_text,
-			pool: $scope.current_pool,
-			successes: rolled_successes + set
-		};
-
-		data.unshift(o);
-		while (data.length > 15) {
-			data.pop();
-		}
-		while (data.length < 15) {
-			data.push("&nbsp;");
-		}
-		if (hangout.length) {
-			gapi.hangout.data.setValue("rolls", angular.toJson(data));
-		}
+		$scope.register_roll(roll);
 	};
 
 	$scope.show_roll_details = function(i) {
@@ -629,6 +756,7 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#mult").buttonset();
 		$("#prof").buttonset();
 		$("#roll_button").button();
+		$("#add_action_button").button();
 
 		$("input[name=multiplier]").change(function(){
 			var prof = this.id == "1x" ? "3" : this.id == "2x" ? "2" : "1";
@@ -667,16 +795,16 @@ function ModelCtrl($scope, $timeout, $filter) {
 		$("#Presence").change(unlock_pool_options);
 		$("#Deduction").change(unlock_pool_options);
 		$("#Attunement").change(unlock_pool_options);
-		$("#Swat").change(function()          { this.checked ? lock_mult(3) : unlock_pool_options() });
-		$("#Tag").change(function()           { this.checked ? lock_mult(3) : unlock_pool_options() });
-		$("#Cleave").change(function()        { this.checked ? lock_mult(2) : unlock_pool_options() });
-		$("#Devastate").change(function()     { this.checked ? lock_mult(1) : unlock_pool_options() });
-		$("#Slow Exhale").change(function()   { this.checked ? lock_mult(1) : unlock_pool_options() });
-		$("#Flinch").change(function()        { this.checked ? lock_mult(3) : unlock_pool_options() });
-		$("#Dodge").change(function()         { this.checked ? lock_mult(3) : unlock_pool_options() });
-		$("#Counterattack").change(function() { this.checked ? lock_mult(3) : unlock_pool_options() });
-		$("#Block").change(function()         { this.checked ? lock_mult(2) : unlock_pool_options() });
-		$("#Brace").change(function()         { this.checked ? lock_mult(1) : unlock_pool_options() });
+		$("#Swat").change(function()        { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Tag").change(function()         { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Cleave").change(function()      { this.checked ? lock_mult(2) : unlock_pool_options() });
+		$("#Devastate").change(function()   { this.checked ? lock_mult(1) : unlock_pool_options() });
+		$("#Slow Exhale").change(function() { this.checked ? lock_mult(1) : unlock_pool_options() });
+		$("#Flinch").change(function()      { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Dodge").change(function()       { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Counter").change(function()     { this.checked ? lock_mult(3) : unlock_pool_options() });
+		$("#Block").change(function()       { this.checked ? lock_mult(2) : unlock_pool_options() });
+		$("#Brace").change(function()       { this.checked ? lock_mult(1) : unlock_pool_options() });
 
 		$('#virtue').editable(function(value, settings) {
 			var num = value.match(/[1-9][0-9]*/)[0];
@@ -742,12 +870,16 @@ function ModelCtrl($scope, $timeout, $filter) {
 		dialog("inventory");
 		dialog("add_items");
 		dialog("odds");
+		dialog("actions");
 		$("#skills").dialog().bind("dialogresize", function(event, ui) {
 			$('#skills .scrolled_content').height( $("#skills").height() - $("#skills .fixed_header").height() );
 		});
+		$("#save").dialog("open");
 		$('#skills .scrolled_content').height(100);
 
 		$(".skill_edit").button();
+		$("#roll_init").button();
+		$("#end_turn").button();
 		$('#skills_table').tableScroll({height:200});
 		$("#inventory_list").sortable();
 		$("#inventory_list").disableSelection();

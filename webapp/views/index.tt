@@ -29,6 +29,29 @@
 	</ul>
 </div>
 
+<div id="actions" title="Actions">
+	<button id="roll_init" ng-click="roll_init()">Roll Init</button>
+	<button id="end_turn" ng-click="end_turn()">End Turn</button>
+	<dl>
+		<dt>Initiative<dd>{{ combat.initiative }}
+		<dt>Focus<dd>{{ combat.focus }}
+		<dt>Weapons<dd class="list" ng-repeat="weapon in inventory | filter:equiped_weapons">
+			{{weapon.name}}
+			<select ng-model="weapon.equip" ng-options="type for type in equip_weapon_types"></select>
+		</dd>
+		<dt>Armor<dd class="list" ng-repeat="armor in inventory | filter:{type: 'armor', equip: true}">{{armor.name}}</dd>
+	</dl>
+	<div id="action_list">
+		Actions
+		<ul>
+			<li ng-repeat="action in combat.actions">
+				<button ng-hide="action.resolved" ng-click="resolve(action)">resolve</button>
+				{{ action.user }} {{ action.action }}
+			</li>
+		</ul>
+	</div>
+</div>
+
 <% MACRO radio(model,value) BLOCK %>
 <input type="radio" name="<%model%>" id="<%value%>" value="<%value%>" ng-model="<%model%>" />
 <label for="<%value%>"><%value%></label>
@@ -84,7 +107,14 @@
 		<% radio("proficiency", 5) %>
 		<% radio("proficiency", 6) %>
 	</div>
+	<div>
+		Focus modifier: <input type="number" ng-model="focus_modifier" />
+	</div>
+	<div>
+		Focus cost: {{ action.focus_cost() }}
+	</div>
 	<button id="roll_button" ng-click="roll()">Roll</button>
+	<button id="add_action_button" ng-click="add_action()">Add action</button>
 </div>
 
 <div id="stamina" title="Stamina">
@@ -108,7 +138,7 @@
 
 <div id="rolls" title="Rolls">
 	<ul>
-		<li ng-repeat="roll in rolls" ng-click="show_roll_details($index)" ng-bind-html="roll.html">
+		<li ng-repeat="roll in rolls" ng-click="show_roll_details($index)" ng-bind-html="roll.message">
 	</ul>
 </div>
 
@@ -119,7 +149,7 @@
 		<dt>Number of dice:
 		<dd>{{ roll_details.dice }}
 		<dt>Proficiency:
-		<dd>{{ roll_details.prof }}
+		<dd>{{ roll_details.proficiency }}
 		<dt>Rolled successes:
 		<dd>{{ roll_details.rolled_successes }}
 		<dt ng-show="roll_details.skills.length > 0">Set:
@@ -210,13 +240,16 @@
 <div class="display_item" id="display_weapon" title="Weapon information">
 	<dl>
 		<dt>Name:       <dd><input ng-model="weapon.name" /></dd>
+		<dt>Skill:      <dd><input ng-model="weapon.skill" /></dd>
 		<dt>Two handed: <dd><input ng-model="weapon.two_handed" /></dd>
 		<dt>Off handed: <dd><input ng-model="weapon.off_handed" /></dd>
 		<dt>Power:      <dd><input ng-model="weapon.power" /></dd>
 		<dt>Resilience: <dd><input ng-model="weapon.resilience" /></dd>
 		<dt>Initiative: <dd><input ng-model="weapon.init" /></dd>
 		<dt>Damage:     <dd><select ng-model="weapon.damage" ng-options="damage for damage in damage_types"></select></dd>
-		<dt>Equip:      <dd><input type="checkbox" ng-model="weapon.equip" /></dd>
+		<dt>Equip:      <dd>
+			<select ng-model="weapon.equip" ng-options="type for type in equip_weapon_types"></select>
+		</dd>
 	</dl>
 	<button ng-show="show_add_item" ng-click="add_item(weapon)">add</button>
 	<button ng-hide="show_add_item" ng-click="delete_item(weapon)">delete</button>
@@ -238,6 +271,7 @@
 <div class="bottom">
 	<div id="config" class="menu">
 		<div ng-click="toggle('pools')">Pools</div>
+		<div ng-click="toggle('actions')">Actions</div>
 		<div ng-click="toggle('rolls')">Rolls</div>
 		<div ng-click="toggle('stamina')">Stamina</div>
 		<div ng-click="toggle('stats')">Stats</div>
